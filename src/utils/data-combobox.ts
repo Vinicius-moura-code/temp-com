@@ -1,0 +1,30 @@
+export const status_demanda = [
+  { id: 0, descricao: '' },
+  { id: 1, descricao: '90-Concluida c/horas apontadas' },
+  { id: 2, descricao: '80-Cancelada' },
+  { id: 3, descricao: '90-Concluida' },
+  { id: 4, descricao: '55-Em homologação pelo usuário' },
+  { id: 5, descricao: '85-Devolvida ao requisitante' },
+  { id: 6, descricao: '45-Teste unitario e doc OK' },
+  { id: 7, descricao: '85-Devolvida ao Requisitante' },
+  { id: 8, descricao: '55-Em homologação pelo usuario' },
+  { id: 9, descricao: '26-Em Revisão de Esforço' },
+  { id: 10, descricao: '65-Não Homologada pelo Usuário' },
+  { id: 11, descricao: '60-Homologada pelo Usuário' },
+  { id: 12, descricao: '30-Em atendimento' },
+  { id: 13, descricao: '20-Em estudo' },
+  { id: 14, descricao: '21-Priorizada' },
+  { id: 15, descricao: '31-Em Desenvolvimento' },
+  { id: 16, descricao: '27-Em Aprovação Esforço Real' },
+  { id: 17, descricao: '10-Nova' },
+  { id: 18, descricao: 'ajustar-manulmente' },
+];
+
+export const tipos_servico = [
+  { id: 0, descricao: '' },
+  { id: 1, descricao: 'D1-Demanda Corretiva' },
+  { id: 2, descricao: 'D2-Demanda Evolutiva' },
+  { id: 3, descricao: 'D3-Demanda Serviço' },
+  { id: 4, descricao: 'D4-Demanda Desenvolv' },
+  { id: 5, descricao: 'ajustar-manulmente' },
+];
