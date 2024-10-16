@@ -82,7 +82,8 @@ export function VideoPlayer({ videoUrl }: { videoUrl: string }) {
       width="100%"
       height="100%"
       controls={false}
-      autoPlay
+      autoPlay={false}
+      preload="metadata"
       style={{
         objectFit: "cover",
         margin: 0,
