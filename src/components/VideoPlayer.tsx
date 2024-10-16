@@ -6,6 +6,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import { pxToRem } from "../theme/typography";
 import useResponsive from "../hooks/useResponsive";
+import Thumb from "assets/thumbVideo.png"
 
 export function VideoPlayer({ videoUrl }: { videoUrl: string }) {
   const isMobile = useResponsive("down", "sm");
@@ -92,6 +93,8 @@ export function VideoPlayer({ videoUrl }: { videoUrl: string }) {
         boxSizing: "border-box",
       }}
       onClick={togglePlayPause}
+
+      poster={Thumb}
     >
       <source src={videoUrl} type="video/mp4" />
       Seu navegador não suporta a reprodução deste vídeo.
