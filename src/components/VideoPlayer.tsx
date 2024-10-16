@@ -82,6 +82,7 @@ export function VideoPlayer({ videoUrl }: { videoUrl: string }) {
       width="100%"
       height="100%"
       controls={false}
+      autoPlay
       style={{
         objectFit: "cover",
         margin: 0,
