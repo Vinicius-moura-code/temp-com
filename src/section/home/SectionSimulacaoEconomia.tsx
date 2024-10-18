@@ -43,6 +43,8 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
           },
           padding:  {
             sm: "clamp(45px, 5.80vw, 96px) 0",
+          },
+          pb:{
             xs: 4
           },
           height: "100%",

@@ -48,6 +48,24 @@ export default function GlobalStyles() {
           margin: 0,
           padding: 0,
         },
+        '&::-webkit-scrollbar': {
+          width: '5px',
+        },
+        'body::-webkit-scrollbar-track': {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          borderRadius: '0px',
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: '#f0f0f0',
+          borderRadius: '5px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: '#F7A600',
+          borderRadius: '8px',
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: '#d18f00',
+        },
       }}
     />
   );

@@ -9,7 +9,10 @@ import { Helmet } from "react-helmet-async";
 import SectionOQueFalamDeNos from "../section/home/SectionOQueFalamDeNos";
 import SectionComALightCom from "../section/home/SectionComALightCom";
 
+
 export default function HomePage() {
+
+
   return (
     <>
       <Helmet>

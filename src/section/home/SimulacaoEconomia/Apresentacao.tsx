@@ -4,6 +4,7 @@ import { pxToRem } from "../../../theme/typography";
 const Apresentacao = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const textShadow = "2px 2px 4px rgba(0, 0, 0, 0.8)";
 
   return (
     <Box
@@ -33,7 +34,8 @@ const Apresentacao = () => {
           pt:{
             xs: pxToRem(96),
             md: 0
-          }
+          },
+          textShadow: textShadow,
         }}
       >
         A CONTA DE ENERGIA DO
@@ -48,6 +50,7 @@ const Apresentacao = () => {
           color: "#FFFFFF",
           letterSpacing: 3,
           mb: 2,
+          textShadow: textShadow,
         }}
       >
         SEU NEGÓCIO ATÉ
@@ -89,6 +92,7 @@ const Apresentacao = () => {
           color: "#FFFFFF",
           letterSpacing: "0.203em",
           mb: 1,
+          textShadow: textShadow,
         }}
       >
         MAIS BARATA
@@ -105,7 +109,8 @@ const Apresentacao = () => {
           pb:{
             xs: pxToRem(30),
             md: 0
-          }
+          },
+          textShadow: textShadow,
         }}
       >
         E RENOVÁVEL
