@@ -7,7 +7,7 @@ import FormSimule from "./SimulacaoEconomia/FormSimule";
 import SnackAlert from "../../components/snackbar/SnackAlert";
 import { bgBlur } from "../../utils/cssStyles";
 import useResponsive from "../../hooks/useResponsive";
-import Image from "../../components/image";
+//import Image from "../../components/image";
 
 export default function SectionSimulacaoEconomia({ id }: { id: string }) {
   const isMobile = useResponsive("down", "sm");
@@ -51,10 +51,10 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
           height: "100%",
         }}
       >
-        <Image
+        <img
           alt="Background"
           src={isMobile ? "/assets/SimulacaoEconomia/BackgroundSimuleMobile.png":  "/assets/SimulacaoEconomia/BackgroundSimule.png" }
-          effect="blur"
+          //effect="blur"
           style={{
             position: "absolute",
             top: 0,
