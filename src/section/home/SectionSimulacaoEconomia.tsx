@@ -41,19 +41,23 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
               opacity: 0.5,
             }),
           },
-          padding:  {
+          padding: {
             sm: "clamp(45px, 5.80vw, 96px) 0",
           },
-          pb:{
-            xs: 4
+          pb: {
+            xs: 4,
           },
           height: "100%",
         }}
       >
         <LazyLoadImage
           alt="Background"
-          src={isMobile ? "/assets/SimulacaoEconomia/BackgroundSimuleMobile.png":  "/assets/SimulacaoEconomia/BackgroundSimule.png" }
-          //effect="blur"
+          src={
+            isMobile
+              ? "/assets/SimulacaoEconomia/BackgroundSimuleMobile.png"
+              : "/assets/SimulacaoEconomia/BackgroundSimule.png"
+          }
+          effect="blur"
           style={{
             position: "absolute",
             top: 0,
@@ -75,7 +79,6 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
               direction="column"
               justifyContent="center"
               alignItems="center"
-
             >
               <Apresentacao />
             </Grid>
