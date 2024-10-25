@@ -52,7 +52,7 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
       >
         <LazyLoadImage
           alt="Background"
-          src={isMobile ? "/assets/SimulacaoEconomia/BackgroundSimuleMobile.png":  "/assets/SimulacaoEconomia/BackgroundSimule.png" }
+          src={isMobile ? "https://www.light.com.br/SiteAssets/images/lightcom/BackgroundSimuleMobile.png":  "https://www.light.com.br/SiteAssets/images/lightcom/BackgroundSimule.png" }
           effect="blur"
           style={{
             position: "absolute",
