@@ -353,7 +353,7 @@ export default function SectionEnergiaRenovavel({ id }: { id: string }) {
                 mb: pxToRem(40),
               }}
             >
-              FATURA DE ENERGIA VOCÊ <FontGradient message="POTENCIALIZA " />O
+              CONTA DE ENERGIA VOCÊ <FontGradient message="POTENCIALIZA " />O
               SEU NEGÓCIO
             </Typography>
           </Grid>

@@ -150,7 +150,7 @@ export default function SectionComALightCom() {
             mb: pxToRem(40),
           }}
         >
-          FATURA DE ENERGIA VOCÊ <FontGradient message="POTENCIALIZA " />O SEU {isMobile && (<br/>)}
+          CONTA DE ENERGIA VOCÊ <FontGradient message="POTENCIALIZA " />O SEU {isMobile && (<br/>)}
           NEGÓCIO
         </Typography>
 
