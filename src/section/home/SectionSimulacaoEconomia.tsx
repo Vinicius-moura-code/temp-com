@@ -1,13 +1,12 @@
 import { AlertColor, Box, Container, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRef } from "react";
-//import { LazyLoadImage } from "react-lazy-load-image-component";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import Apresentacao from "./SimulacaoEconomia/Apresentacao";
 import FormSimule from "./SimulacaoEconomia/FormSimule";
 import SnackAlert from "../../components/snackbar/SnackAlert";
 import { bgBlur } from "../../utils/cssStyles";
 import useResponsive from "../../hooks/useResponsive";
-//import Image from "../../components/image";
 
 export default function SectionSimulacaoEconomia({ id }: { id: string }) {
   const isMobile = useResponsive("down", "sm");
@@ -51,7 +50,7 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
           height: "100%",
         }}
       >
-        <img
+        <LazyLoadImage
           alt="Background"
           src={isMobile ? "/assets/SimulacaoEconomia/BackgroundSimuleMobile.png":  "/assets/SimulacaoEconomia/BackgroundSimule.png" }
           //effect="blur"
