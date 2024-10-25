@@ -1,12 +1,13 @@
 import { AlertColor, Box, Container, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRef } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+//import { LazyLoadImage } from "react-lazy-load-image-component";
 import Apresentacao from "./SimulacaoEconomia/Apresentacao";
 import FormSimule from "./SimulacaoEconomia/FormSimule";
 import SnackAlert from "../../components/snackbar/SnackAlert";
 import { bgBlur } from "../../utils/cssStyles";
 import useResponsive from "../../hooks/useResponsive";
+import Image from "../../components/image";
 
 export default function SectionSimulacaoEconomia({ id }: { id: string }) {
   const isMobile = useResponsive("down", "sm");
@@ -50,9 +51,9 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
           height: "100%",
         }}
       >
-        <LazyLoadImage
+        <Image
           alt="Background"
-          src={isMobile ? "https://www.light.com.br/SiteAssets/images/lightcom/BackgroundSimuleMobile.png":  "https://www.light.com.br/SiteAssets/images/lightcom/BackgroundSimule.png" }
+          src={isMobile ? "/assets/SimulacaoEconomia/BackgroundSimuleMobile.png":  "/assets/SimulacaoEconomia/BackgroundSimule.png" }
           effect="blur"
           style={{
             position: "absolute",
