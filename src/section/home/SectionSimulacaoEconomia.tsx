@@ -54,8 +54,8 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
           alt="Background"
           src={
             isMobile
-              ? "/assets/SimulacaoEconomia/BackgroundSimuleMobile.jpeg"
-              : "/assets/SimulacaoEconomia/BackgroundSimule.jpg"
+              ? "/assets/SimulacaoEconomia/BackgroundSimuleMobile.png"
+              : "/assets/SimulacaoEconomia/BackgroundSimule.png"
           }
           effect="blur"
           style={{
