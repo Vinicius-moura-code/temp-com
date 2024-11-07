@@ -1,7 +1,7 @@
 import { HelmetProvider } from "react-helmet-async";
 import ThemeProvider from "./theme";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeSettings } from "./components/settings";
+import { SettingsProvider, ThemeSettings } from "./components/settings";
 import { MotionLazyContainer } from "./components/animate";
 
 import Routes from "./routes";
@@ -10,6 +10,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/pt-br";
 import dayjs from "dayjs";
 import updateLocale from "dayjs/plugin/updateLocale";
+
+import { AuthProvider } from "./auth/JwtContext";
+import SnackbarProvider from "./components/snackbar";
 
 dayjs.extend(updateLocale);
 dayjs.updateLocale("pt-br", {
@@ -20,19 +23,25 @@ dayjs.locale("pt-br");
 
 function App() {
   return (
-    <HelmetProvider>
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-        <BrowserRouter>
-          <MotionLazyContainer>
-            <ThemeProvider>
-              <ThemeSettings>
-                <Routes />
-              </ThemeSettings>
-            </ThemeProvider>
-          </MotionLazyContainer>
-        </BrowserRouter>
-      </LocalizationProvider>
-    </HelmetProvider>
+    <AuthProvider>
+      <HelmetProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+          <SettingsProvider>
+            <BrowserRouter>
+              <MotionLazyContainer>
+                <ThemeProvider>
+                  <ThemeSettings>
+                    <SnackbarProvider>
+                      <Routes />
+                    </SnackbarProvider>
+                  </ThemeSettings>
+                </ThemeProvider>
+              </MotionLazyContainer>
+            </BrowserRouter>
+          </SettingsProvider>
+        </LocalizationProvider>
+      </HelmetProvider>
+    </AuthProvider>
   );
 }
 

@@ -168,11 +168,10 @@ const Agendamento: React.FC<CalendarProps> = ({
 
   const onSubmit = async () => {
     setLoadingButton(true);
-    const horaio = watch("horario");
     const body: RequestSchedule = {
       identifier: responseForm!.identifier,
       meetingSuggestion: availableSchedule?.filter((s) =>
-        s.startDateTime.includes(horaio)
+        s.startDateTime.includes(watch("horario"))
       )[0],
     };
 

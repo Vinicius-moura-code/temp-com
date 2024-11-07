@@ -19,7 +19,7 @@ import { bgBlur } from "../../../utils/cssStyles";
 import useOffSetTop from "../../../hooks/useOffSetTop";
 import useResponsive from "../../../hooks/useResponsive";
 // config
-import { HEADER, NAV } from "../../../config-global";
+import { HEADER } from "../../../config-global";
 // components
 import Logo from "../../../components/logo";
 import { useSettingsContext } from "../../../components/settings";
@@ -27,6 +27,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { menuItems } from "../nav-config";
 import SimulaEconomiaButton from "./SimulaEconomiaButton";
+import LoginButton from "./LoginButton";
 
 // ----------------------------------------------------------------------
 
@@ -76,7 +77,13 @@ export default function Header() {
             justifyContent: "center",
           }}
         >
-          <Logo sx={{ mr: 2.5, width: 'calc(90px * 0.90)', height: 'calc(43.42px * 0.90)' }} />
+          <Logo
+            sx={{
+              mr: 2.5,
+              width: "calc(90px * 0.90)",
+              height: "calc(43.42px * 0.90)",
+            }}
+          />
         </Box>
       )}
 
@@ -87,7 +94,12 @@ export default function Header() {
         direction="row"
         alignItems="center"
         justifyContent="end"
-        spacing={{ xs: 0.5, md: 5, sm: 1.5 }}
+        spacing={{
+          xs: 0.5,
+          sm: 1.5,
+          md: 2,
+          xl: 5,
+        }}
       >
         {isDesktop && (
           <>
@@ -106,7 +118,6 @@ export default function Header() {
                   padding: "8px 16px",
                   paddingLeft: 0,
                   paddingRight: 0,
-                  //marginRight: 10,
                   "&:hover": {
                     backgroundColor: "transparent",
                     boxShadow: "none",
@@ -141,6 +152,9 @@ export default function Header() {
                 )}
               </Button>
             ))}
+
+            <LoginButton />
+
             <SimulaEconomiaButton
               onClick={() => handleMenuClick(menuItems[0])}
             />
@@ -175,7 +189,7 @@ export default function Header() {
           duration: theme.transitions.duration.shorter,
         }),
         ...(isDesktop && {
-          width: `calc(100% - ${NAV.W_DASHBOARD + 0}px)`,
+          width: `calc(100% - ${0 + 0}px)`,
           height: HEADER.H_DASHBOARD_DESKTOP_OFFSET + 5,
           ...(isOffset && {
             height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
@@ -187,7 +201,7 @@ export default function Header() {
             borderBottom: `dashed 1px ${theme.palette.divider}`,
           }),
           ...(isNavMini && {
-            width: `calc(100% - ${NAV.W_DASHBOARD_MINI + 1}px)`,
+            width: `calc(100% - ${0 + 1}px)`,
           }),
         }),
       }}
@@ -240,6 +254,12 @@ export default function Header() {
               </ListItemButton>
             </ListItem>
           ))}
+
+          <ListItem>
+            <ListItemButton>
+              <LoginButton />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
     </AppBar>

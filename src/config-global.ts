@@ -1,3 +1,5 @@
+import { PATH_DASHBOARD } from "./routes/paths";
+
 export const HOST_API = import.meta.env.VITE_REACT_APP_HOST_API || "";
 export const HOST_API_KEY = import.meta.env.VITE_REACT_APP_API_KEY || "";
 export const HOST_GOOGLE_TAG = import.meta.env.VITE_REACT_APP_GOOGLE_TAG || "";
@@ -26,8 +28,7 @@ export const HEADER = {
 
 export const NAV = {
   W_BASE: 260,
-  //W_DASHBOARD: 280,
-  W_DASHBOARD: 0,
+  W_DASHBOARD: 280,
   W_DASHBOARD_MINI: 88,
   //
   H_DASHBOARD_ITEM: 48,
@@ -42,7 +43,7 @@ export const ICON = {
   NAV_ITEM_MINI: 22,
 };
 
-export const PATH_AFTER_LOGIN = "/;";
+export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.app;
 
 export const phoneNumber = "5521997453639"; 
 export const linkwhatsApp = `https://wa.me/${phoneNumber}`;
