@@ -71,7 +71,6 @@ export default function SectionPerguntasFrequentes({ id }: { id: string }) {
         >
           <Typography
             component="h2"
-
             sx={{
               fontWeight: 400,
               fontSize: isMobile ? pxToRem(32) : pxToRem(40),
@@ -81,22 +80,20 @@ export default function SectionPerguntasFrequentes({ id }: { id: string }) {
               mr: 1.5,
             }}
           >
-            Perguntas
-          </Typography>
-          <Typography
-            component="h2"
-
-            sx={{
-              background: "linear-gradient(90deg, #3677E0 0%, #009A93 100%)",
-              fontWeight: 800,
-              fontSize: isMobile ? pxToRem(32) : pxToRem(40),
-              lineHeight: isMobile ? pxToRem(40) : pxToRem(54),
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            Frequentes
+            Perguntas{" "}
+            <span
+              style={{
+                background: "linear-gradient(90deg, #3677E0 0%, #009A93 100%)",
+                fontWeight: 800,
+                fontSize: isMobile ? pxToRem(32) : pxToRem(40),
+                lineHeight: isMobile ? pxToRem(40) : pxToRem(54),
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Frequentes
+            </span>
           </Typography>
         </Box>
 
