@@ -120,7 +120,7 @@ const UploadButton: React.FC<UploadButtonProps> = ({
 
         <Tooltip title={name}>
           <Typography
-            component="p"
+            variant="body1"
             sx={{
               whiteSpace: "nowrap",
               overflow: "hidden",
@@ -132,7 +132,7 @@ const UploadButton: React.FC<UploadButtonProps> = ({
         </Tooltip>
 
         <IconButton
-          aria-label="delete"
+          aria-label="Remover arquivo de conta"
           onClick={() => {
             setValue("fatura", "");
             setName("");
@@ -191,6 +191,7 @@ const UploadButton: React.FC<UploadButtonProps> = ({
           type="file"
           onChange={handleFileChange}
           accept=".pdf, .jpeg, .jpg, .png, .heif, .heic, .bmp"
+          aria-label="Adicionar arquivo de conta"
         />
       </Button>
       {erro.fatura && (

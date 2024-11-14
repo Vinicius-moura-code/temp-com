@@ -88,8 +88,6 @@ export default function AuthLoginForm() {
       );
       reset();
     } catch (error: any) {
-      console.error(error);
-
       setError("afterSubmit", {
         ...error!,
         message: String(error.message),

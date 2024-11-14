@@ -36,7 +36,7 @@ const CustomerInformation = () => {
           color: "#FFFFFF",
         }}
       >
-        Bem-vindo (a), {user?.displayName}
+        Bem-vindo (a), {user?.displayName.split(" ")[0]}
       </Typography>
 
       <Typography

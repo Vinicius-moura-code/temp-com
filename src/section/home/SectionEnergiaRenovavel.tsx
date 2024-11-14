@@ -379,6 +379,7 @@ export default function SectionEnergiaRenovavel({ id }: { id: string }) {
                       <img
                         src={card.src}
                         style={{ width: "auto", height: "auto" }}
+                        alt={card.title}
                       />
                     }
                   />

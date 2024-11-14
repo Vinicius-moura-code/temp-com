@@ -322,6 +322,7 @@ export default function FormSimule({ showAlert }: FormProps) {
                       onChange={(_, newValue) =>
                         setValue("vlrMensal", newValue as number)
                       }
+                      aria-label="valor mensal"
                     />
                   )}
                 />

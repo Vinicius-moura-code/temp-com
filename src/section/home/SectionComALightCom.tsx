@@ -44,7 +44,7 @@ export default function SectionComALightCom() {
     >
       <CardHeader
         avatar={
-          <img src={card.src} style={{ width: "auto", height: "auto" }} />
+          <img src={card.src} style={{ width: "auto", height: "auto" }} alt={card.title}/>
         }
       />
 

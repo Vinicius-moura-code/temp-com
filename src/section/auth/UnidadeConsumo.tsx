@@ -69,7 +69,7 @@ const UnidadeConsumo = () => {
           lineHeight: pxToRem(28.44),
         }}
       >
-        Selecione o contrato e o unidade de consumo quedeseja consultar.
+        Selecione o contrato e o unidade de consumo que deseja consultar.
       </Typography>
 
       <Box

@@ -13,7 +13,6 @@ import { pxToRem } from "../../theme/typography";
 import useResponsive from "../../hooks/useResponsive";
 
 export default function SectionPerguntasFrequentes({ id }: { id: string }) {
-
   const isMobile = useResponsive("down", "sm");
   const datas = [
     {
@@ -66,33 +65,38 @@ export default function SectionPerguntasFrequentes({ id }: { id: string }) {
           sx={{
             display: "flex",
             justifyContent: "center",
-            textAlign: "center"
+            textAlign: "center",
+            textTransform: "uppercase",
           }}
         >
           <Typography
-            component="span"
+            component="h2"
+
             sx={{
-              textTransform: "uppercase",
               fontWeight: 400,
-              fontSize: isMobile? pxToRem(32) :  pxToRem(40),
-              lineHeight: isMobile? pxToRem(40) :pxToRem(54),
+              fontSize: isMobile ? pxToRem(32) : pxToRem(40),
+              lineHeight: isMobile ? pxToRem(40) : pxToRem(54),
               color: "#797979",
-              "& strong": {
-                background: "linear-gradient(90deg, #3677E0 0%, #009A93 100%)",
-                fontWeight: 800,
-                fontSize: isMobile? pxToRem(32) : pxToRem(40),
-                lineHeight: isMobile? pxToRem(40) : pxToRem(54),
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              },
               pb: pxToRem(40),
+              mr: 1.5,
             }}
           >
-            Perguntas{" "}
-            <Typography component="strong" sx={{}}>
-              Frequentes
-            </Typography>
+            Perguntas
+          </Typography>
+          <Typography
+            component="h2"
+
+            sx={{
+              background: "linear-gradient(90deg, #3677E0 0%, #009A93 100%)",
+              fontWeight: 800,
+              fontSize: isMobile ? pxToRem(32) : pxToRem(40),
+              lineHeight: isMobile ? pxToRem(40) : pxToRem(54),
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Frequentes
           </Typography>
         </Box>
 
@@ -104,7 +108,7 @@ export default function SectionPerguntasFrequentes({ id }: { id: string }) {
         >
           {datas.map((data, index) => (
             <Accordion
-              expanded={expanded === "panel" + index} 
+              expanded={expanded === "panel" + index}
               onChange={handleChange("panel" + index)}
               key={index}
               sx={{
@@ -122,20 +126,20 @@ export default function SectionPerguntasFrequentes({ id }: { id: string }) {
                 expandIcon={<ExpandMoreIcon color="primary" />}
                 sx={{
                   height: {
-                    md:  pxToRem(88),
-                    xs: "auto"
+                    md: pxToRem(88),
+                    xs: "auto",
                   },
                   p: {
                     sm: pxToRem(32),
-                    xs: pxToRem(28)
-                  }
+                    xs: pxToRem(28),
+                  },
                 }}
               >
                 <Typography
                   sx={{
-                    fontSize: isMobile? pxToRem(16) : pxToRem(20),
+                    fontSize: isMobile ? pxToRem(16) : pxToRem(20),
                     fontWeight: 500,
-                    lineHeight: isMobile? "1.6rem" : pxToRem(22),
+                    lineHeight: isMobile ? "1.6rem" : pxToRem(22),
                     textAlign: "left",
                     color: "#494949",
                   }}
@@ -146,9 +150,9 @@ export default function SectionPerguntasFrequentes({ id }: { id: string }) {
               <AccordionDetails
                 sx={{
                   color: "#494949",
-                  fontSize: isMobile? pxToRem(16) : "1.125rem",
+                  fontSize: isMobile ? pxToRem(16) : "1.125rem",
                   fontWeight: 400,
-                  lineHeight: isMobile? "1.6rem": "1.8rem",
+                  lineHeight: isMobile ? "1.6rem" : "1.8rem",
                 }}
               >
                 {data.description}

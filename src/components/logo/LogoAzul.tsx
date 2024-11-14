@@ -15,7 +15,7 @@ const LogoAzul = forwardRef<HTMLDivElement, LogoProps>(
         component="img"
         src="/assets/LogoAzul.svg"
         sx={{ width: "90px", height: "43.42px", cursor: "pointer", ...sx }}
-        alt="logo azul"
+        alt="logo azul light"
         {...other}
       />
     );
@@ -25,7 +25,12 @@ const LogoAzul = forwardRef<HTMLDivElement, LogoProps>(
     }
 
     return (
-      <Link component={RouterLink} to="/" sx={{ display: "contents" }}>
+      <Link
+        component={RouterLink}
+        to="/"
+        sx={{ display: "contents" }}
+        aria-label="return to home"
+      >
         {logos}
       </Link>
     );

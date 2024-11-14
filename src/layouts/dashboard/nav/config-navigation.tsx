@@ -37,6 +37,7 @@ const ICONS = {
   analytics: icon("ic_analytics"),
   dashboard: icon("ic_dashboard"),
   home: icon("ic_home"),
+  contract: icon("ic_contract"),
 };
 
 const navConfig = [
@@ -46,6 +47,7 @@ const navConfig = [
     subheader: "general",
     items: [
       { title: "home", path: PATH_DASHBOARD.general.app, icon: ICONS.home },
+      { title: "contrato", path: PATH_DASHBOARD.user.contract, icon: ICONS.contract },
     ],
   },
 ];

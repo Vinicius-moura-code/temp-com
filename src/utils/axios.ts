@@ -20,11 +20,17 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) =>
-    Promise.reject(
-      (error.response && error.response.data) || "Something went wrong"
-    )
+  (error) => {
+    
+    const errorMessage = 
+      error.response?.status === 500 
+        ? "Erro interno. Por favor, tente novamente mais tarde."
+        : error.response?.data?.message || "Ocorreu um erro. Tente novamente.";
+
+    return Promise.reject(new Error(errorMessage));
+  }
 );
+
 
 axios.interceptors.response.use(
   (response) => response,
@@ -45,6 +51,13 @@ axios.interceptors.response.use(
         console.log("Failed to refresh token:", refreshError);
         window.location.href = PATH_AUTH.login;
       }
+    }
+
+    if (error.response.status === 500) {
+      return Promise.reject({
+        status: 500,
+        message: "Tivemos um problema interno. Por favor, tente novamente mais tarde.",
+      });
     }
 
     return Promise.reject(error);

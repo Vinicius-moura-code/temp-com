@@ -9,8 +9,6 @@ import { NavSectionMini } from "../../../components/nav-section";
 //
 import navConfig from "./config-navigation";
 import CustomNavToggleButton from "./CustomNavToggleButton";
-import LogoutButton from "./LogoutButton";
-
 export default function NavMini() {
   return (
     <Box
@@ -32,7 +30,6 @@ export default function NavMini() {
       >
         <CustomNavToggleButton />
         <NavSectionMini data={navConfig} />
-        <LogoutButton/>
       </Stack>
     </Box>
   );

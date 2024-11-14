@@ -1,6 +1,6 @@
 // @mui
 import { useTheme } from "@mui/material/styles";
-import { Stack, AppBar, Toolbar, IconButton } from "@mui/material";
+import { Stack, AppBar, Toolbar, IconButton, Box } from "@mui/material";
 // utils
 import { bgBlur } from "../../../utils/cssStyles";
 // hooks
@@ -15,6 +15,7 @@ import { useSettingsContext } from "../../../components/settings";
 import Searchbar from "./Searchbar";
 import AccountPopover from "./AccountPopover";
 import { LogoAzul } from "../../../components/logo";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +25,8 @@ type Props = {
 
 export default function Header({ onOpenNav }: Props) {
   const theme = useTheme();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const { themeLayout } = useSettingsContext();
 
@@ -35,9 +38,14 @@ export default function Header({ onOpenNav }: Props) {
 
   const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal;
 
+  const showBackButton = location.pathname !== "/dashboard/app";
+
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
   const renderContent = (
     <>
-    
       {isDesktop ? (
         <>
           <LogoAzul sx={{ mr: 2, width: "90px" }} />
@@ -54,15 +62,29 @@ export default function Header({ onOpenNav }: Props) {
         </>
       ) : (
         <>
+          {showBackButton && (
+            <IconButton onClick={handleBackClick}>
+              <Box
+                component="img"
+                src="/assets/home/arrow back.svg"
+                sx={{
+                  width: "20px",
+                  height: "20px",
+                  cursor: "pointer",
+                }}
+                alt="arrow back"
+              />
+            </IconButton>
+          )}
+          <LogoAzul sx={{ mr: 2, width: "90px" }} />
           <Stack
             flexGrow={1}
             direction="row"
             alignItems="center"
-            justifyContent="flex-start"
-            spacing={{ xs: 0.5, sm: 1.5 }}
+            justifyContent="flex-end"
+            spacing={{ xs: 0.5, sm: 2 }}
           >
             <AccountPopover />
-         
           </Stack>
 
           <IconButton onClick={onOpenNav} sx={{ mr: 1, color: "text.primary" }}>
@@ -107,6 +129,11 @@ export default function Header({ onOpenNav }: Props) {
         sx={{
           height: 1,
           px: { lg: 5 },
+          background: {
+            md: "#ffffff",
+            xl: "#ffffff",
+            xs: "#f0f0f0",
+          },
         }}
       >
         {renderContent}

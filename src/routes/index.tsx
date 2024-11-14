@@ -16,6 +16,7 @@ import CompactLayout from "../layouts/compact";
 import ResetPasswordPage from "../pages/auth/ResetPasswordPage";
 import UnidadeConsumo from "../section/auth/UnidadeConsumo";
 import AuthFirstAccessPage from "../pages/auth/AuthFirstAccessPage";
+import ContractOfAdhesionPage from "../pages/dashboard/ContractOfAdhesionPage";
 
 export default function Router() {
   return useRoutes([
@@ -70,6 +71,10 @@ export default function Router() {
               element: <UserAccountPage />,
             },
           ],
+        },
+        {
+          path: "Contract",
+          element: <ContractOfAdhesionPage />,
         },
       ],
     },

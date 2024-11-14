@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // @mui
 import { alpha } from "@mui/material/styles";
-import { Box, Divider, Typography, Stack, MenuItem } from "@mui/material";
+import { Divider, Typography, Stack, MenuItem, Box } from "@mui/material";
 // routes
 import { PATH_DASHBOARD, PATH_AUTH } from "../../../routes/paths";
 // auth
@@ -19,8 +19,9 @@ import useResponsive from "../../../hooks/useResponsive";
 
 const OPTIONS = [
   {
-    label: "Minha Conta",
+    label: "Dados Cadastrais",
     linkTo: PATH_DASHBOARD.user.account,
+    icon: "../../assets/user/user.svg",
   },
 ];
 
@@ -28,7 +29,7 @@ const OPTIONS = [
 
 export default function AccountPopover() {
   const navigate = useNavigate();
-  
+
   const isDesktop = useResponsive("up", "lg");
 
   const { user, logout } = useAuthContext();
@@ -84,65 +85,67 @@ export default function AccountPopover() {
           src={user?.photoURL}
           alt={user?.displayName}
           name={user?.displayName}
-
           sx={{
-            color:"#3677E0",
+            color: "#3677E0",
             backgroundColor: "#FFFFFF",
             border: "2px solid #3677E0",
             fontWeight: 700,
             fontSize: pxToRem(16),
-            lineHeight: pxToRem(18.96)
+            lineHeight: pxToRem(18.96),
           }}
         />
-           
       </IconButtonAnimate>
 
       <Typography
-              component="p"
-              sx={{
-                pl: pxToRem(12),
-                color: "#64748B",
-                fontWeight: 400,
-                fontSize: pxToRem(14),
-                lineHeight: pxToRem(23.8),
-                "& strong": {
-                  color: "#0F172A",
-                  fontWeight: 700,
-                  fontSize: pxToRem(20),
-                  lineHeight: pxToRem(24),
-                },
-              }}
-            >
-              {!isDesktop && "Bem- Vindo(a)"}
-              <Typography component="strong">
-              {!isDesktop && <br />} 
-                {user?.displayName}
-              </Typography>
-            </Typography>
+        component="p"
+        sx={{
+          pl: pxToRem(12),
+          color: "#64748B",
+          fontWeight: 400,
+          fontSize: pxToRem(14),
+          lineHeight: pxToRem(23.8),
+          "& strong": {
+            color: "#0F172A",
+            fontWeight: 700,
+            fontSize: pxToRem(20),
+            lineHeight: pxToRem(24),
+          },
+        }}
+      >
+        {!isDesktop && "Bem- Vindo(a)"}
+        <Typography component="strong">
+          {!isDesktop && <br />}
+          {user?.displayName.split(" ")[0]}
+        </Typography>
+      </Typography>
 
       <MenuPopover
         open={openPopover}
         onClose={handleClosePopover}
         sx={{ width: 200, p: 0 }}
       >
-        <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
-          </Typography>
-
-          {/* <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {user?.email}
-          </Typography> */}
-        </Box>
-
-        <Divider sx={{ borderStyle: "dashed" }} />
-
         <Stack sx={{ p: 1 }}>
           {OPTIONS.map((option) => (
             <MenuItem
               key={option.label}
               onClick={() => handleClickItem(String(option.linkTo))}
+              sx={{
+                color: "#000000",
+                fontSize: pxToRem(14),
+                fontWeight: 400,
+                lineHeight: pxToRem(200),
+              }}
             >
+              <Box
+                component="img"
+                src={option.icon}
+                alt={option.label}
+                sx={{
+                  width: pxToRem(16),
+                  height: pxToRem(15.52),
+                  marginRight: pxToRem(16),
+                }}
+              />
               {option.label}
             </MenuItem>
           ))}
@@ -151,7 +154,17 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: "dashed" }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Logout
+          <Box
+            component="img"
+            src="../../assets/user/logout.svg"
+            alt="Sair"
+            sx={{
+              width: pxToRem(18),
+              height: pxToRem(18),
+              marginRight: pxToRem(16),
+            }}
+          />
+          Sair
         </MenuItem>
       </MenuPopover>
     </>

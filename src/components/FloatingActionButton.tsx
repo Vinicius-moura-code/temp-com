@@ -3,7 +3,7 @@ import { linkwhatsApp } from "../config-global";
 
 const FloatingActionButton = () => {
   const handleWhatsAppRedirect = () => {
-    window.open(linkwhatsApp, '_blank');
+    window.open(linkwhatsApp, "_blank");
   };
 
   return (
@@ -22,13 +22,12 @@ const FloatingActionButton = () => {
       }}
       onClick={handleWhatsAppRedirect}
     >
-     <img
-                  src="assets/whatsApp.svg"
-                  alt="logo whatsApp"
-                  style={{
-                    width: "25.7px",
-                  }}
-                />
+      <img
+        src="assets/whatsApp.svg"
+        alt="logo whatsApp"
+        width="25.7px"
+        height="25.7px"
+      />
     </Fab>
   );
 };

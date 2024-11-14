@@ -27,7 +27,9 @@ function App() {
       <HelmetProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
           <SettingsProvider>
-            <BrowserRouter>
+            <BrowserRouter
+              future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+            >
               <MotionLazyContainer>
                 <ThemeProvider>
                   <ThemeSettings>

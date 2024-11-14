@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 // components
-import LoadingScreen from '../components/loading-screen';
+import LoadingScreen from "../components/loading-screen";
 //
-import Login from '../pages/auth/LoginPage';
-import { useAuthContext } from './useAuthContext';
+import { LoginPage } from "../routes/elements";
+import { useAuthContext } from "./useAuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +17,9 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   const { pathname } = useLocation();
 
-  const [requestedLocation, setRequestedLocation] = useState<string | null>(null);
+  const [requestedLocation, setRequestedLocation] = useState<string | null>(
+    null
+  );
 
   if (!isInitialized) {
     return <LoadingScreen />;
@@ -27,7 +29,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     if (pathname !== requestedLocation) {
       setRequestedLocation(pathname);
     }
-    return <Login />;
+    return <LoginPage />;
   }
 
   if (requestedLocation && pathname !== requestedLocation) {

@@ -5,13 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormProvider from "../../components/hook-form/FormProvider";
 import { LoadingButton } from "@mui/lab";
 import { Alert, Box, InputBaseComponentProps, Stack } from "@mui/material";
-import { forwardRef, useRef } from "react";
+import { forwardRef, useState } from "react";
 import { IMaskInput } from "react-imask";
 import { RHFTextField } from "../../components/hook-form";
 import axiosInstance from "../../utils/axios";
-import SnackAlert from "../../components/snackbar/SnackAlert";
-import { useNavigate } from "react-router-dom";
-import { PATH_DASHBOARD } from "../../routes/paths";
+import VerifyAccountModal from "./VerifyAccountModal";
 
 type FormValuesProps = {
   cpfCnpj: string;
@@ -20,8 +18,9 @@ type FormValuesProps = {
 };
 
 const AuthFirstAccessForm = () => {
-  const navigate = useNavigate();
-  const snackAlertRef = useRef<any>(null);
+  const [open, setOpen] = useState(false);
+  const [email, setemail] = useState("");
+
   const FirstAccessSchema = z.object({
     cpfCnpj: z
       .string()
@@ -33,9 +32,9 @@ const AuthFirstAccessForm = () => {
           : isValidCNPJ(cleanValue);
       }, "CPF ou CNPJ inválido"),
     email: z
-        .string()
-        .min(1, "E-mail é obrigatório")
-        .email("O e-mail deve ser um endereço de e-mail válido"),
+      .string()
+      .min(1, "E-mail é obrigatório")
+      .email("O e-mail deve ser um endereço de e-mail válido"),
   });
 
   const defaultValues = {
@@ -57,21 +56,21 @@ const AuthFirstAccessForm = () => {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      const res = await axiosInstance.post("/v1/Auth/first-access", {
-        cnpj:  data.cpfCnpj.replace(/[^\d]+/g, ""),
+      await axiosInstance.post("/v1/Auth/first-access", {
+        cnpj: data.cpfCnpj.replace(/[^\d]+/g, ""),
         email: data.email,
       });
-      snackAlertRef.current.showAlert(res.data.message, "success");
-      setTimeout(() => {
-        reset();
-        navigate(PATH_DASHBOARD.root);
-      }, 2000);
+
+      setemail(data.email);
+      setOpen(true);
+      reset();
     } catch (error: any) {
       console.error(error);
 
       setError("afterSubmit", {
         ...error!,
-        message: String(error.message) || "Erro interno, tente novamente mais tarde.",
+        message:
+          String(error.message) || "Erro interno, tente novamente mais tarde.",
       });
     }
   };
@@ -97,9 +96,11 @@ const AuthFirstAccessForm = () => {
       );
     }
   );
+
+  const handleCloseModal = () => setOpen(false);
   return (
     <>
-      <SnackAlert ref={snackAlertRef} />
+      <VerifyAccountModal open={open} email={email} onClose={handleCloseModal} />
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Box
           sx={{
@@ -119,10 +120,7 @@ const AuthFirstAccessForm = () => {
               }}
             />
 
-            <RHFTextField
-              name="email"
-              label="Email"
-            />
+            <RHFTextField name="email" label="Email" />
 
             <LoadingButton
               fullWidth

@@ -47,7 +47,12 @@ export default function DashboardLayout() {
 
         <Main
           sx={{
-            background: "#F8FAFC",
+            background: "#f0f0f0",
+            height: {
+              md: "auto",
+              xl: "auto",
+              xs: "100vh",
+            },
           }}
         >
           <Outlet />
@@ -71,7 +76,17 @@ export default function DashboardLayout() {
 
           <Main
             sx={{
-              background: "#F8FAFC",
+              background: "#f0f0f0",
+              height: {
+                md: "auto",
+                xl: "auto",
+                xs: "100vh",
+              },
+              padding: {
+                md: "125px 32px 32px 32px",
+                xl: "125px 32px 32px 32px",
+                xs: "70px 16px 16px 16px",
+              },
             }}
           >
             <Outlet />
@@ -83,7 +98,6 @@ export default function DashboardLayout() {
 
   return (
     <>
-    
       <Header onOpenNav={handleOpen} />
 
       <Box
@@ -94,7 +108,15 @@ export default function DashboardLayout() {
       >
         {renderNavVertical}
 
-        <Main>
+        <Main
+          sx={{
+            padding: {
+              md: "125px 32px 32px 32px",
+              xl: "125px 32px 32px 32px",
+              xs: "70px 16px 16px 16px",
+            },
+          }}
+        >
           <Outlet />
         </Main>
       </Box>

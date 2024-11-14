@@ -12,7 +12,6 @@ import { NavSectionVertical } from "../../../components/nav-section";
 //
 import navConfig from "./config-navigation";
 import CustomNavToggleButton from "./CustomNavToggleButton";
-import LogoutButton from "./LogoutButton";
 
 // ----------------------------------------------------------------------
 
@@ -59,12 +58,6 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      <Box sx={{
-        pl:2,
-        color:"warning.main"
-      }}>
-        <LogoutButton />
-      </Box>
     </Scrollbar>
   );
 
