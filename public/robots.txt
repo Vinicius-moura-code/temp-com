@@ -1,0 +1,20 @@
+User-agent: *
+# Bloqueio de rotas de autenticação e recuperação de senha
+Disallow: /auth/login
+Disallow: /auth/reset-password
+Disallow: /auth/new-password
+Disallow: /auth/verify
+Disallow: /auth/first-access
+Disallow: /auth/consumption-unit
+
+# Bloqueio do dashboard e subrotas de usuário
+Disallow: /dashboard
+Disallow: /dashboard/app
+Disallow: /dashboard/user
+Disallow: /dashboard/user/account
+
+# Permitir acesso à homepage
+Allow: /
+
+# Sitemap
+Sitemap: https://www.lightcom.com.br/sitemap.xml

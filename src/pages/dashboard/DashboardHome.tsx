@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, useMediaQuery, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useSettingsContext } from "../../components/settings";
 import { pxToRem } from "../../theme/typography";
@@ -7,20 +7,22 @@ import ContractExpires from "./Home/ContractExpires";
 import QuickAccess from "./Home/QuickAccess";
 import { Helmet } from "react-helmet-async";
 export default function DashboardHome() {
-  
   const { themeStretch } = useSettingsContext();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
       <Helmet>
-        <title> Home</title>
+        <title>Home</title>
       </Helmet>
 
       <Container
         maxWidth={themeStretch ? false : "xl"}
         sx={{
-          padding: 0,
-          margin: 0,
+          ...(isMobile && {
+            height: "100vh",
+          }),
         }}
       >
         <Grid container spacing={3}>

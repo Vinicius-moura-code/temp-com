@@ -47,7 +47,7 @@ const navConfig = [
     subheader: "general",
     items: [
       { title: "home", path: PATH_DASHBOARD.general.app, icon: ICONS.home },
-      { title: "contrato", path: PATH_DASHBOARD.user.contract, icon: ICONS.contract },
+      //{ title: "contrato", path: PATH_DASHBOARD.user.contract, icon: ICONS.contract },
     ],
   },
 ];
