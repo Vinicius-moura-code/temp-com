@@ -87,7 +87,10 @@ export default function SectionConheca({ id }: { id: string }) {
             segurança e solidez ao seu negócio.
           </Typography>
 
-          <VideoPlayer videoUrl="https://www.lightcom.com.br/assets/videos/ComercializadoraEnergia.mp4" />
+          <VideoPlayer
+            videoUrlDesktop="https://www.lightcom.com.br/assets/videos/ComercializadoraEnergia.mp4"
+            videoUrlMobile="https://www.lightcom.com.br/assets/videos/ComercializadoraEnergia-mobile.mp4"
+          />
 
           <Typography
             component="span"
