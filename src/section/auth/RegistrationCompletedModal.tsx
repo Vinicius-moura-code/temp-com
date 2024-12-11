@@ -77,7 +77,7 @@ const RegistrationCompletedModal = ({
             }}
           >
             Agora você já pode acessar o{" "}
-            <Typography component="strong">Light Com</Typography> e utilizar
+            <Typography component="strong">Light COM</Typography> e utilizar
             nossos serviços.
           </Typography>
 

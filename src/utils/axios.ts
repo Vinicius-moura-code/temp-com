@@ -1,12 +1,14 @@
 import axios from "axios";
 // config
 import { HOST_API_KEY, HOST_API } from "../config-global";
-import { PATH_AUTH } from "../routes/paths";
-import { handleTokenRefresh } from "../auth/utils";
+//import { setSession } from "../auth/utils";
+//import { PATH_AUTH } from "../routes/paths";
+//import { handleTokenRefresh } from "../auth/utils";
 
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({ baseURL: HOST_API });
+axiosInstance.defaults.withCredentials = true;
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -18,45 +20,59 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
+//     const isRefreshing = localStorage.getItem("isRefreshing");
+
+//     if (originalRequest._retry === undefined) {
+//       originalRequest._retry = false;
+//     }
+
+//     if (error.response.status === 401 && !originalRequest._retry && !isRefreshing) {
+//       originalRequest._retry = true;
+
+//       try {
+//         const refreshResponse = await axiosInstance.post(
+//           "/v1/Auth/refresh-token"
+//         );
+//         const { token } = refreshResponse.data;
+
+//         if (token) {
+//           setSession(token);
+//           originalRequest.headers["Authorization"] = `Bearer ${token}`;
+//           return axiosInstance(originalRequest);
+//         } else {
+//           throw new Error("Token de atualização inválido");
+//         }
+//       } catch (refreshError) {
+//         console.error("Erro ao renovar o token", refreshError);
+
+//         window.location.href = "/login";
+//         return Promise.reject(refreshError);
+//       }
+//     }
+
+//     return Promise.reject(error); // Rejeita o erro para a requisição original
+//   }
+// );
+
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
-    
-    const errorMessage = 
-      error.response?.status === 500 
-        ? "Erro interno. Por favor, tente novamente mais tarde."
-        : error.response?.data?.message || "Ocorreu um erro. Tente novamente.";
-
-    return Promise.reject(new Error(errorMessage));
-  }
-);
-
-
-axios.interceptors.response.use(
-  (response) => response,
   async (error) => {
-    const originalRequest = error.config;
-
-    if (
-      error.response.status === 401 &&
-      !originalRequest._retry &&
-      localStorage.getItem("refreshToken")
-    ) {
-      originalRequest._retry = true;
-
-      try {
-        await handleTokenRefresh();
-        return axios(originalRequest);
-      } catch (refreshError) {
-        console.log("Failed to refresh token:", refreshError);
-        window.location.href = PATH_AUTH.login;
-      }
+    if (error.response.status === 429) {
+      return Promise.reject({
+        status: 429,
+        message: "Tente novamente mais tarde.",
+      });
     }
 
     if (error.response.status === 500) {
       return Promise.reject({
         status: 500,
-        message: "Tivemos um problema interno. Por favor, tente novamente mais tarde.",
+        message:
+          "Tivemos um problema interno. Por favor, tente novamente mais tarde.",
       });
     }
 

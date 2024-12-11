@@ -76,6 +76,7 @@ export default function AuthLoginForm() {
     setError,
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods;
 
@@ -118,6 +119,11 @@ export default function AuthLoginForm() {
   );
 
   useEffect(() => {
+    const manterConectado = localStorage.getItem("KeepConnected");
+    if (manterConectado) {
+      setValue("manterConectado", JSON.parse(manterConectado));
+    }
+
     const data = localStorage.getItem("sessionExpired");
     if (JSON.parse(data!)) {
       enqueueSnackbar("Sessão expirada, faça login novamente.", {
@@ -126,7 +132,7 @@ export default function AuthLoginForm() {
 
       localStorage.removeItem("sessionExpired");
     }
-  }, [enqueueSnackbar]);
+  }, [enqueueSnackbar, setValue]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -147,6 +153,7 @@ export default function AuthLoginForm() {
           <RHFTextField
             name="cpfCnpj"
             label="CPF ou CNPJ*"
+            autoComplete="username"
             InputProps={{
               inputComponent: TextMaskCustom,
             }}
@@ -156,6 +163,7 @@ export default function AuthLoginForm() {
             name="password"
             label="Senha"
             type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

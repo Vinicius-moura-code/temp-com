@@ -13,10 +13,18 @@ import {
   useTheme,
   Typography,
   Stack,
+  Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import { pxToRem } from "../../theme/typography";
 import Carousel from "../../components/Carousel";
+import { useCallback, useEffect, useState } from "react";
+import axiosInstance from "../../utils/axios";
+import { useAuthContext } from "../../auth/useAuthContext";
+import { formatToDate } from "../../utils/format";
+import dayjs from "dayjs";
+import { enqueueSnackbar } from "../../components/snackbar";
 
 const columns = [
   {
@@ -32,43 +40,13 @@ const columns = [
     description: "Vencimento",
   },
   {
-    description: "Código da instalação",
-  },
-  {
     description: "Responsável",
-  },
-  {
-    description: "Serviço Adicional",
   },
   {
     description: "Endereço",
   },
   {
     description: "Baixar",
-  },
-];
-
-const rows = [
-  {
-    contrato: "12345678",
-    status: "Ativo",
-    adesao: "20/11/2023",
-    vencimento: "30/11/2024",
-    codigoInstalacao: "1234567890",
-    responsavel: "Lindsey Souza",
-    servicoAdicional: "Não",
-    endereco: "Fidelis Papini 100, Vila Prudente, CEP 03132-020 São Paulo SP",
-  },
-
-  {
-    contrato: "12345000",
-    status: "Inativo",
-    adesao: "31/10/2023",
-    vencimento: "31/10/2024",
-    codigoInstalacao: "1234567890",
-    responsavel: "Lindsey Souza",
-    servicoAdicional: "Não",
-    endereco: "Fidelis Papini 100, Vila Prudente, CEP 03132-020 São Paulo SP",
   },
 ];
 
@@ -80,6 +58,79 @@ interface StackItemProps {
   value?: string | number;
   typeValue?: TypeValueProps;
 }
+
+interface contracts {
+  success: boolean;
+  message: string | null;
+  response: {
+    contracts: contratoProps[];
+  };
+}
+
+interface contratoProps {
+  code: string;
+  partyName: string;
+  counterPartyName: string;
+  startDate: string;
+  endDate: string;
+  price: number;
+  value: number;
+  partyProfileAcronym: string;
+  counterPartyProfileAcronym: string;
+}
+
+const downloadContract = async (code: string) => {
+  try {
+    const { data } = await axiosInstance.post(
+      "/v1/Operation/download-contract",
+      { contractId: code },
+      { responseType: "blob" }
+    );
+
+    const url = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${code}.${data.type.split("/")[1]}`);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode?.removeChild(link);
+  } catch (error: any) {
+    console.error(error);
+    enqueueSnackbar("Arquivo não encontrado", {
+      variant: "error",
+    });
+  }
+};
+
+const getStatus = (item: contratoProps) => {
+  const dataAtual = dayjs();
+  const dataInicio = dayjs(item.startDate);
+  const dataFim = dayjs(item.endDate);
+
+  const status =
+    dataAtual.isAfter(dataInicio) && dataAtual.isBefore(dataFim)
+      ? "Ativo"
+      : "Inativo";
+  // console.log(status);
+  return status;
+};
+
+interface ChipProps {
+  value: string;
+}
+
+const ChipStatus: React.FC<ChipProps> = ({ value }) => {
+  return (
+    <Chip
+      label={value}
+      sx={{
+        backgroundColor: value === "Ativo" ? "#D1FADA" : "#FFF4CC",
+        color: value === "Ativo" ? "#36BD54" : "#C09807",
+        width: "fit-content",
+      }}
+    />
+  );
+};
 
 const StackItem: React.FC<StackItemProps> = ({
   label,
@@ -110,16 +161,7 @@ const StackItem: React.FC<StackItemProps> = ({
         {label}
       </Typography>
 
-      {typeValue.type === "status" && (
-        <Chip
-          label={value}
-          sx={{
-            backgroundColor: value === "Ativo" ? "#D1FADA" : "#FFF4CC",
-            color: value === "Ativo" ? "#36BD54" : "#C09807",
-            width: "fit-content",
-          }}
-        />
-      )}
+      {typeValue.type === "status" && <ChipStatus value={value as string} />}
 
       {typeValue.type === "text" && (
         <Typography
@@ -137,7 +179,11 @@ const StackItem: React.FC<StackItemProps> = ({
       )}
 
       {typeValue.type === "download" && (
-        <IconButton color="primary" aria-label={label}>
+        <IconButton
+          color="primary"
+          aria-label={label}
+          onClick={() => downloadContract(value as string)}
+        >
           <DownloadIcon />
         </IconButton>
       )}
@@ -145,8 +191,8 @@ const StackItem: React.FC<StackItemProps> = ({
   );
 };
 
-const renderCards = () => {
-  return rows.map((row, index) => (
+const renderCards = (contracts: contratoProps[]) => {
+  return contracts.map((row, index) => (
     <Box
       key={index}
       sx={{
@@ -155,29 +201,72 @@ const renderCards = () => {
         gap: "16px",
       }}
     >
-      <StackItem label="N° Contrato" value={row.contrato} />
+      <StackItem label="N° Contrato" value={row.code} />
       <StackItem
         label="Status"
-        value={row.status}
+        value={getStatus(row)} //{row.status}
         typeValue={{ type: "status" }}
       />
-      <StackItem label="Adesão" value={row.adesao} />
-      <StackItem label="Código da instalação" value={row.codigoInstalacao} />
-      <StackItem label="Responsável" value={row.responsavel} />
-      <StackItem label="Endereço" value={row.endereco} />
-      <StackItem label="Serviço Adicional" value={row.servicoAdicional} />
-      <StackItem label="Baixar" typeValue={{ type: "download" }} />
+      <StackItem label="Adesão" value={formatToDate(row.startDate)} />
+      <StackItem label="Responsável" value={row.counterPartyName} />
+      <StackItem label="Endereço" value={row.partyProfileAcronym} />
+      <StackItem
+        label="Baixar"
+        value={row.code}
+        typeValue={{ type: "download" }}
+      />
     </Box>
   ));
 };
 
+
 const GridContratosTable = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { physicalAssetsSelected, user } = useAuthContext();
+  const [contracts, setContracts] = useState<contratoProps[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getMyContracts = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axiosInstance.post<contracts>(
+        "/v1/Account/my-contracts",
+        { physicalAssetId: physicalAssetsSelected }
+      );
+
+      setContracts(data.response.contracts);
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [physicalAssetsSelected]);
+
+  const getAddress = (): string => {
+    const address = user?.address;
+    return `${address?.street ?? ''} ${address?.number ?? ''}, ${address?.neighborhood ?? ''}, ${address?.city ?? ''}, ${address?.state ?? ''}${address?.zipcode ? ` - CEP ${address.zipcode}` : ''}`.trim();
+  };
+
+  useEffect(() => {
+    getMyContracts();
+  }, [getMyContracts]);
+
   return (
     <>
-      {isMobile ? (
-        <Carousel cards={renderCards()} />
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "200px",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : isMobile ? (
+        <Carousel cards={renderCards(contracts)} />
       ) : (
         <TableContainer component={Paper}>
           <Table
@@ -195,17 +284,17 @@ const GridContratosTable = () => {
                   },
                 }}
               >
-                {columns.map((colum, index) => (
+                {columns.map((column, index) => (
                   <TableCell key={index} sx={headStyle}>
-                    {colum.description}
+                    {column.description}
                   </TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {contracts.map((row, key) => (
                 <TableRow
-                  key={row.contrato}
+                  key={key}
                   sx={{
                     "& td": {
                       backgroundColor: "#DDDDDD4D",
@@ -218,31 +307,41 @@ const GridContratosTable = () => {
                       borderBottomLeftRadius: "6px",
                     }}
                   >
-                    {row.contrato}
+                    {row.code}
                   </TableCell>
                   <TableCell>
-                    <Chip
-                      label={row.status}
-                      sx={{
-                        backgroundColor:
-                          row.status === "Ativo" ? "#D1FADA" : "#FFF4CC",
-                        color: row.status === "Ativo" ? "#36BD54" : "#C09807",
-                        border: "none",
-                      }}
-                      variant="outlined"
-                    />
+                    <ChipStatus value={getStatus(row)} />
                   </TableCell>
-                  <TableCell>{row.adesao}</TableCell>
-                  <TableCell>{row.vencimento}</TableCell>
-                  <TableCell>{row.codigoInstalacao}</TableCell>
-                  <TableCell>{row.responsavel}</TableCell>
-                  <TableCell>{row.servicoAdicional}</TableCell>
-                  <TableCell width={260}>{row.endereco}</TableCell>
-                  <TableCell  sx={{
+                  <TableCell>{formatToDate(row.startDate)}</TableCell>
+                  <TableCell>{formatToDate(row.endDate)}</TableCell>
+                  <TableCell>
+                    {user?.physicalAssets.find(
+                      ({ id }) => id === physicalAssetsSelected
+                    )?.name || "Not Found"}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      maxWidth: "200px",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    <Tooltip title={getAddress()} arrow>
+                      <span>{getAddress()}</span>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell
+                    sx={{
                       borderTopRightRadius: "6px",
                       borderBottomRightRadius: "6px",
-                    }}>
-                    <IconButton color="primary" aria-label="download">
+                    }}
+                  >
+                    <IconButton
+                      color="primary"
+                      aria-label="download"
+                      onClick={() => downloadContract(row.code)}
+                    >
                       <DownloadIcon />
                     </IconButton>
                   </TableCell>

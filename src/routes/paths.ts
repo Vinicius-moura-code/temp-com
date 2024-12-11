@@ -35,5 +35,6 @@ export const PATH_DASHBOARD = {
     edit: (name: string) => path(ROOTS_DASHBOARD, `/user/${name}/edit`),
     profile: path(ROOTS_DASHBOARD, '/user/profile'),
     contract: path(ROOTS_DASHBOARD, '/contract'),
+    invoice: path(ROOTS_DASHBOARD, '/invoice'),
   },
 };

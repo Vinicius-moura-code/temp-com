@@ -47,7 +47,7 @@ export default function DashboardLayout() {
 
         <Main
           sx={{
-            background: "#f0f0f0",
+            background: "#F1F7FF",
             height: {
               md: "auto",
               xl: "auto",
@@ -76,7 +76,7 @@ export default function DashboardLayout() {
 
           <Main
             sx={{
-              background: "#f0f0f0",
+              background: "#F1F7FF",
               height: {
                 md: "auto",
                 xl: "auto",
@@ -114,6 +114,11 @@ export default function DashboardLayout() {
               md: "125px 32px 32px 32px",
               xl: "125px 32px 32px 32px",
               xs: "70px 16px 16px 16px",
+            },
+            height: {
+              md: "auto",
+              xl: "auto",
+              xs: "100vh",
             },
           }}
         >

@@ -4,7 +4,6 @@ import {
   Stack,
   TextField,
   Typography,
-  CircularProgress,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Helmet } from "react-helmet-async";
@@ -12,47 +11,19 @@ import { pxToRem } from "../../theme/typography";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { Link as RouterLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import PasswordChangedModal from "../../section/user/PasswordChangedModal";
 import ChangePasswordModal from "../../section/user/ChangePasswordModal";
-import axiosInstance from "../../utils/axios";
 import {
   CellOrTelephoneField,
   CpfOrCnpjField,
 } from "../../components/FormComponents";
+import { useAuthContext } from "../../auth/useAuthContext";
 
-interface User {
-  user: MyAccount;
-}
-
-interface MyAccount {
-  displayName: string;
-  email: string;
-  photoURL: string;
-  phone: string;
-  cnpj: string;
-  RazaoSocial: string;
-  address: Address;
-  passwordLastChanged: string;
-}
-
-interface Address {
-  city: string;
-  complement: string;
-  id: string;
-  lastSync: string;
-  neighborhood: string;
-  number: string;
-  state: string;
-  street: string;
-  zipcode: string;
-}
 
 export default function UserAccountPage() {
   const [open, setOpen] = useState(false);
-  const [myAccount, setMyAccount] = useState<MyAccount | null>(null);
-  const [loading, setLoading] = useState(true); // Estado de carregamento
-
+  const { user } = useAuthContext();
   const [openPasswordChanged, setOpenPasswordChanged] = useState(false);
   const handleCloseModal = () => setOpen(false);
 
@@ -61,36 +32,8 @@ export default function UserAccountPage() {
     setOpenPasswordChanged(true);
   };
 
-  useEffect(() => {
-    getMyAccount();
-  }, []);
-
-  const getMyAccount = async () => {
-    try {
-      const response = await axiosInstance.get<User>("/v1/account/my-account");
-      setMyAccount(response.data.user);
-    } catch (error) {
-      console.error("Erro ao buscar dados da conta:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
-
   const getAddress = (): string => {
-    const address = myAccount?.address;
+    const address = user?.address;
     return `${address?.street ?? ''} ${address?.number ?? ''}, ${address?.neighborhood ?? ''}, ${address?.city ?? ''}, ${address?.state ?? ''}${address?.zipcode ? ` - CEP ${address.zipcode}` : ''}`.trim();
   };
 
@@ -152,7 +95,7 @@ export default function UserAccountPage() {
               disabled
               id="cpfOuCnpj"
               label="CPF ou CNPJ"
-              defaultValue={myAccount?.cnpj?? ''}
+              defaultValue={user?.cnpj?? ''}
               InputProps={{
                 inputComponent: CpfOrCnpjField,
               }}
@@ -165,7 +108,7 @@ export default function UserAccountPage() {
               disabled
               id="razaoSocial"
               label="Razão social"
-              defaultValue={myAccount?.RazaoSocial?? ''}
+              defaultValue={user?.RazaoSocial?? ''}
             />
           </Grid>
 
@@ -185,7 +128,7 @@ export default function UserAccountPage() {
               disabled
               id="responsavel"
               label="Responsável"
-              defaultValue={myAccount?.displayName?? ''}
+              defaultValue={user?.displayName?? ''}
             />
           </Grid>
 
@@ -195,7 +138,7 @@ export default function UserAccountPage() {
               disabled
               id="email"
               label="E-mail"
-              defaultValue={myAccount?.email}
+              defaultValue={user?.email}
             />
           </Grid>
 
@@ -205,7 +148,7 @@ export default function UserAccountPage() {
               disabled
               id="contato"
               label="Contato"
-              defaultValue={myAccount?.phone?? ''}
+              defaultValue={user?.phone?? ''}
               InputProps={{
                 inputComponent: CellOrTelephoneField,
               }}
@@ -238,7 +181,7 @@ export default function UserAccountPage() {
             sx={{ width: pxToRem(258.33) }}
             label="Data da última alteração"
             disabled
-            defaultValue={dayjs(myAccount?.passwordLastChanged?? '')}
+            defaultValue={dayjs(user?.passwordLastChanged?? '')}
           />
 
           <Link

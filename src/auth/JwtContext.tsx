@@ -1,21 +1,11 @@
-import {
-  createContext,
-  useEffect,
-  useReducer,
-  useCallback,
-  useMemo,
-} from "react";
+import { useEffect, useReducer, useCallback, useMemo } from "react";
 // utils
 import axios from "../utils/axios";
 import localStorageAvailable from "../utils/localStorageAvailable";
 //
-import { isValidToken, setSession } from "./utils";
-import {
-  ActionMapType,
-  AuthStateType,
-  AuthUserType,
-  JWTContextType,
-} from "./types";
+import { handleTokenRefresh, isValidToken, setSession } from "./utils";
+import { ActionMapType, AuthStateType, AuthUserType } from "./types";
+import { AuthContext } from "./AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +20,8 @@ enum Types {
   LOGIN = "LOGIN",
   REGISTER = "REGISTER",
   LOGOUT = "LOGOUT",
+  MFA_REQUIRED = "MFA_REQUIRED",
+  PHYSICAL_ASSETS = "PHYSICAL_ASSETS",
 }
 
 type Payload = {
@@ -40,10 +32,18 @@ type Payload = {
   [Types.LOGIN]: {
     user: AuthUserType;
   };
+  [Types.MFA_REQUIRED]: {
+    mfaPending: boolean;
+    mfaEmail?: string;
+  };
   [Types.REGISTER]: {
     user: AuthUserType;
   };
   [Types.LOGOUT]: undefined;
+
+  [Types.PHYSICAL_ASSETS]: {
+    physicalAssetsSelected: string;
+  };
 };
 
 type ActionsType = ActionMapType<Payload>[keyof ActionMapType<Payload>];
@@ -54,53 +54,64 @@ const initialState: AuthStateType = {
   isInitialized: false,
   isAuthenticated: false,
   user: null,
+  mfaPending: false,
+  mfaEmail: null,
+  physicalAssetsSelected: null,
 };
 
-const reducer = (state: AuthStateType, action: ActionsType) => {
-  if (action.type === Types.INITIAL) {
-    return {
-      isInitialized: true,
-      isAuthenticated: action.payload.isAuthenticated,
-      user: action.payload.user,
-    };
+const reducer = (state: AuthStateType, action: ActionsType): AuthStateType => {
+  switch (action.type) {
+    case Types.INITIAL:
+      return {
+        ...state,
+        isInitialized: true,
+        isAuthenticated: action.payload.isAuthenticated,
+        user: action.payload.user,
+      };
+
+    case Types.LOGIN:
+    case Types.REGISTER:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+      };
+
+    case Types.LOGOUT:
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null,
+      };
+
+    case Types.MFA_REQUIRED:
+      return {
+        ...state,
+        mfaPending: action.payload.mfaPending,
+        mfaEmail: action.payload.mfaEmail,
+      };
+    case Types.PHYSICAL_ASSETS:
+      return {
+        ...state,
+        physicalAssetsSelected: action.payload.physicalAssetsSelected,
+      };
+
+    default:
+      return state;
   }
-  if (action.type === Types.LOGIN) {
-    return {
-      ...state,
-      isAuthenticated: true,
-      user: action.payload.user,
-    };
-  }
-  if (action.type === Types.REGISTER) {
-    return {
-      ...state,
-      isAuthenticated: true,
-      user: action.payload.user,
-    };
-  }
-  if (action.type === Types.LOGOUT) {
-    return {
-      ...state,
-      isAuthenticated: false,
-      user: null,
-    };
-  }
-  return state;
 };
-
-// ----------------------------------------------------------------------
-
-export const AuthContext = createContext<JWTContextType | null>(null);
-
-// ----------------------------------------------------------------------
 
 type AuthProviderProps = {
   children: React.ReactNode;
 };
 
+function JustValidateToken(accessToken: string | null) {
+  if (accessToken === null) return false;
+  return accessToken && isValidToken(accessToken);
+}
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const storageAvailable = localStorageAvailable();
 
   const initialize = useCallback(async () => {
@@ -109,18 +120,33 @@ export function AuthProvider({ children }: AuthProviderProps) {
         ? localStorage.getItem("accessToken")
         : "";
 
-      if (accessToken && isValidToken(accessToken)) {
+      const keepConnected = storageAvailable
+        ? localStorage.getItem("KeepConnected") === "true"
+        : false;
+
+      if (keepConnected && !JustValidateToken(accessToken)) {
+        await handleTokenRefresh();
+      }
+
+      if (JustValidateToken(accessToken)) {
         setSession(accessToken);
 
         const response = await axios.get("/v1/account/my-account");
 
-        const { user } = response.data;
+        const { user } = response.data.response;
 
         dispatch({
           type: Types.INITIAL,
           payload: {
             isAuthenticated: true,
             user,
+          },
+        });
+
+        dispatch({
+          type: Types.PHYSICAL_ASSETS,
+          payload: {
+            physicalAssetsSelected: user?.physicalAssets[0]?.id,
           },
         });
       } else {
@@ -132,8 +158,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
           },
         });
       }
-    } catch (error) {
-      console.error(error);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
+      setSession(null);
       dispatch({
         type: Types.INITIAL,
         payload: {
@@ -149,23 +176,75 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [initialize]);
 
   // LOGIN
-  const login = useCallback(async (cnpj: string, password: string) => {
-    cnpj = cnpj.replace(/\D/g, "").trim();
-    const response = await axios.post("/v1/Auth/login", {
-      cnpj,
-      password,
-    });
-    const { token, refreshToken, user } = response.data;
+  const login = useCallback(
+    async (cnpj: string, password: string) => {
+      cnpj = cnpj.replace(/\D/g, "").trim();
+      const response = await axios.post("/v1/Auth/login", {
+        cnpj,
+        password,
+      });
+      const { mfaRequired } = response.data.response;
+      if (mfaRequired) {
+        dispatch({
+          type: Types.MFA_REQUIRED,
+          payload: {
+            mfaPending: true,
+            mfaEmail: response.data?.response?.email,
+          },
+        });
+      } else {
+        const { token, user } = response.data.response;
 
-    setSession(token, refreshToken);
+        setSession(token);
+        dispatch({
+          type: Types.LOGIN,
+          payload: {
+            user,
+          },
+        });
+        dispatch({
+          type: Types.PHYSICAL_ASSETS,
+          payload: {
+            physicalAssetsSelected: user?.physicalAssets[0]?.id,
+          },
+        });
+      }
+    },
+    [dispatch]
+  );
 
-    dispatch({
-      type: Types.LOGIN,
-      payload: {
-        user,
-      },
-    });
-  }, []);
+  //MFA
+  const verifyMfa = useCallback(
+    async (code: string) => {
+      const response = await axios.post("/v1/Auth/mfa/verify", {
+        email: state.mfaEmail,
+        code,
+      });
+
+      const { token, user } = response.data.response;
+
+      setSession(token);
+      dispatch({
+        type: Types.MFA_REQUIRED,
+        payload: { mfaPending: false, mfaEmail: "" },
+      });
+
+      dispatch({
+        type: Types.LOGIN,
+        payload: {
+          user,
+        },
+      });
+
+      dispatch({
+        type: Types.PHYSICAL_ASSETS,
+        payload: {
+          physicalAssetsSelected: user?.physicalAssets[0]?.id,
+        },
+      });
+    },
+    [state.mfaEmail]
+  );
 
   // REGISTER
   const register = useCallback(
@@ -181,9 +260,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         firstName,
         lastName,
       });
-      const { accessToken, user } = response.data;
+      const { token, user } = response.data;
 
-      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("accessToken", token);
 
       dispatch({
         type: Types.REGISTER,
@@ -197,22 +276,50 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // LOGOUT
   const logout = useCallback(async () => {
-    await axios.post("/v1/Auth/logout", {
-       email: state.user?.email,  
-       refreshToken:  localStorage.getItem("refreshToken")
-    }).then(() => {
-      setSession(null);
-      dispatch({
-        type: Types.LOGOUT,
+    await axios
+      .post("/v1/Auth/logout", {
+        email: state.user?.email,
+      })
+      .then(() => {
+        setSession(null);
+        dispatch({
+          type: Types.LOGOUT,
+        });
       });
-    })
   }, [state.user?.email]);
+
+  // Refresh My Account
+  const refreshMyAccount = useCallback(async () => {
+    const response = await axios.get("/v1/account/my-account");
+
+    const { user } = response.data.response;
+
+    dispatch({
+      type: Types.INITIAL,
+      payload: {
+        isAuthenticated: true,
+        user,
+      },
+    });
+  }, []);
+
+  const SetPhysicalAssets = useCallback((value: string) => {
+    dispatch({
+      type: Types.PHYSICAL_ASSETS,
+      payload: {
+        physicalAssetsSelected: value,
+      },
+    });
+  }, []);
 
   const memoizedValue = useMemo(
     () => ({
       isInitialized: state.isInitialized,
       isAuthenticated: state.isAuthenticated,
       user: state.user,
+      mfaPending: state.mfaPending,
+      mfaEmail: state.mfaEmail,
+      verifyMfa,
       method: "jwt",
       login,
       loginWithGoogle: () => {},
@@ -220,14 +327,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
       loginWithTwitter: () => {},
       register,
       logout,
+      refreshMyAccount,
+      physicalAssetsSelected: state.physicalAssetsSelected,
+      SetPhysicalAssets,
     }),
     [
-      state.isAuthenticated,
       state.isInitialized,
+      state.isAuthenticated,
       state.user,
+      state.mfaPending,
+      state.mfaEmail,
+      verifyMfa,
       login,
-      logout,
       register,
+      logout,
+      refreshMyAccount,
+      state.physicalAssetsSelected,
+      SetPhysicalAssets,
     ]
   );
 

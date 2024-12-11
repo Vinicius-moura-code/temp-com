@@ -1,57 +1,54 @@
-import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink } from 'react-router-dom';
-// @mui
-import { Link, Typography } from '@mui/material';
-// routes
-import { PATH_AUTH } from '../../routes/paths';
-// components
-import Iconify from '../../components/iconify';
-// sections
-import AuthVerifyCodeForm from '../../section/auth/AuthVerifyCodeForm';
-// assets
-import { EmailInboxIcon } from '../../assets/icons';
-
-// ----------------------------------------------------------------------
+import { Helmet } from "react-helmet-async";
+import { Stack, Typography } from "@mui/material";
+import LogoAzulCenter from "../../components/logo/LogoAzulCenter";
+import AuthVerifyCodeForm from "../../section/auth/AuthVerifyCodeForm";
+import { pxToRem } from "../../theme/typography";
+import { formatEmail } from "../../utils/format";
+import { useParams } from "react-router-dom";
 
 export default function VerifyCodePage() {
+  const { _email } = useParams();
   return (
     <>
       <Helmet>
-        <title> Verify Code | Minimal UI</title>
+        <title>Mfa</title>
       </Helmet>
 
-      <EmailInboxIcon sx={{ mb: 5, height: 96 }} />
+      <LogoAzulCenter />
 
-      <Typography variant="h3" paragraph>
-        Please check your email!
-      </Typography>
+      <Stack direction="column" spacing={2}>
+        <Typography
+          component="p"
+          sx={{
+            color: "#525A5C",
+            fontSize: pxToRem(24),
+            fontWeight: 500,
+            lineHeight: pxToRem(32.4),
+          }}
+        >
+          Digite o código de autenticação enviado para o seu e-mail.
+        </Typography>
 
-      <Typography sx={{ color: 'text.secondary', mb: 5 }}>
-        We have emailed a 6-digit confirmation code to acb@domain, please enter the code in below
-        box to verify your email.
-      </Typography>
+        <Typography
+          component="p"
+          sx={{
+            color: "#797979",
+            fontSize: pxToRem(16),
+            fontWeight: 400,
+            lineHeight: pxToRem(24),
+            "& strong": {
+              color: "#3677E0",
+            },
+          }}
+        >
+          Um código foi enviado para{" "}
+          <Typography component="strong">{formatEmail(_email || "") }</Typography>
+        </Typography>
 
-      <AuthVerifyCodeForm />
+        <AuthVerifyCodeForm />
 
-      <Typography variant="body2" sx={{ my: 3 }}>
-        Don’t have a code? &nbsp;
-        <Link variant="subtitle2">Resend code</Link>
-      </Typography>
-
-      <Link
-        component={RouterLink}
-        to={PATH_AUTH.login}
-        color="inherit"
-        variant="subtitle2"
-        sx={{
-          mx: 'auto',
-          alignItems: 'center',
-          display: 'inline-flex',
-        }}
-      >
-        <Iconify icon="eva:chevron-left-fill" width={16} />
-        Return to sign in
-      </Link>
+       
+      </Stack>
     </>
   );
 }

@@ -4,6 +4,8 @@ import { List, Stack } from "@mui/material";
 import { NavSectionProps } from "../types";
 
 import NavList from "./NavList";
+import useResponsive from "../../../hooks/useResponsive";
+import NavSectionMobile from "./NavSectionMobile";
 
 // ----------------------------------------------------------------------
 
@@ -12,8 +14,11 @@ export default function NavSectionVertical({
   sx,
   ...other
 }: NavSectionProps) {
+  const isDesktop = useResponsive("up", "lg");
   return (
-    <Stack sx={sx} {...other}>
+    
+    <>
+    {isDesktop ? (<Stack sx={sx} {...other}>
       {data.map((group) => {
         const key = group.subheader || group.items[0].title;
 
@@ -34,6 +39,7 @@ export default function NavSectionVertical({
           </List>
         );
       })}
-    </Stack>
+    </Stack>) : (<NavSectionMobile />)}
+    </>
   );
 }

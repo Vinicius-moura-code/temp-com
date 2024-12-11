@@ -59,7 +59,7 @@ const ContractExpires = () => {
           }}
         >
           Renove agora e continue aproveitando os serviços exclusivos que só a{" "}
-          <Typography component="strong">Light Com </Typography> oferece!
+          <Typography component="strong">Light COM </Typography> oferece!
         </Typography>
       </Box>
       <Box

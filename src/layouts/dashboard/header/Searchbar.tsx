@@ -192,9 +192,9 @@ function Searchbar() {
                 const partsTitle = parse(title, match(title, inputValue));
 
                 const partsPath = parse(path, match(path, inputValue));
-
+                const { key, ...restProps } = props;
                 return (
-                  <Box component="li" {...props} onClick={() => handleClick(path)}>
+                  <Box key={key} component="li" {...restProps} onClick={() => handleClick(path)}>
                     <div>
                       {partsTitle.map((part, index) => (
                         <Box

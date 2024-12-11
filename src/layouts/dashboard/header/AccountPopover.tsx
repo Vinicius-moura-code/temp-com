@@ -26,8 +26,13 @@ const OPTIONS = [
 ];
 
 // ----------------------------------------------------------------------
+type AccountPopoverProps = {
+  visibleWelcome?: boolean;
+};
 
-export default function AccountPopover() {
+export default function AccountPopover({
+  visibleWelcome = true,
+}: AccountPopoverProps) {
   const navigate = useNavigate();
 
   const isDesktop = useResponsive("up", "lg");
@@ -48,12 +53,13 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      logout();
-      navigate(PATH_AUTH.login, { replace: true });
+      await logout();
       handleClosePopover();
     } catch (error) {
       console.error(error);
       enqueueSnackbar("Unable to logout!", { variant: "error" });
+    } finally {
+      navigate(PATH_AUTH.login, { replace: true });
     }
   };
 
@@ -65,7 +71,7 @@ export default function AccountPopover() {
   return (
     <>
       <IconButtonAnimate
-        onClick={handleOpenPopover}
+        onClick={isDesktop ? handleOpenPopover : undefined}
         sx={{
           p: 0,
           ...(openPopover && {
@@ -112,9 +118,9 @@ export default function AccountPopover() {
           },
         }}
       >
-        {!isDesktop && "Bem- Vindo(a)"}
+        {!isDesktop && visibleWelcome && "Bem - Vindo(a)"}
         <Typography component="strong">
-          {!isDesktop && <br />}
+          {!isDesktop && visibleWelcome && <br />}
           {user?.displayName.split(" ")[0]}
         </Typography>
       </Typography>

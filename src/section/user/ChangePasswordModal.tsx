@@ -67,7 +67,7 @@ const modalStyle = {
     xs: "auto",
   },
   overflowY: "auto",
-  bgcolor: "#F4F4F4E5",
+  bgcolor: "#ffffff",
   boxShadow: 24,
   borderRadius: pxToRem(16),
 };

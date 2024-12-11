@@ -84,7 +84,7 @@ export default function SectionMercadoLivreDeEnergia({ id }: { id: string }) {
                   fontWeight: 500,
                 }}
               >
-                Light Com
+                Light COM
               </Typography>
               {""}, vamos além da economia. Oferecemos soluções{" "}
               <Typography

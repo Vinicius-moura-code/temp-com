@@ -44,7 +44,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
       component="main"
       sx={{
         flexGrow: 1,
-        background:"#f0f0f0",
+        background:"#F1F7FF",
         py: `${HEADER.H_MOBILE + SPACING}px`,
         ...(isDesktop && {
           px: 2,

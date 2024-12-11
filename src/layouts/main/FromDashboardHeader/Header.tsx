@@ -24,10 +24,11 @@ import { HEADER } from "../../../config-global";
 import Logo from "../../../components/logo";
 import { useSettingsContext } from "../../../components/settings";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { menuItems } from "../nav-config";
 import SimulaEconomiaButton from "./SimulaEconomiaButton";
 import LoginButton from "./LoginButton";
+import { useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +48,8 @@ export default function Header() {
   const isDesktop = useResponsive("up", "lg");
 
   const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal;
-
+  const navigate = useNavigate();
+  
   const handleScrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -57,11 +59,19 @@ export default function Header() {
     }
   };
 
-  const handleMenuClick = (menu: any) => {
+  
+const handleMenuClick = (menu: any) => {
+  
+  if (location.pathname === '/cookies') {
+    navigate('/'); 
+    location.reload();
+  } 
+    
     handleScrollToSection(menu.sectionId);
     setSelectedMenu(menu.title);
     toggleDrawer();
-  };
+  
+};
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -172,6 +182,31 @@ export default function Header() {
     </>
   );
 
+  const handleScroll = useCallback(() => {
+    let currentSection = "";
+
+    menuItems.forEach((section) => {
+      const element = document.getElementById(section.sectionId);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
+          currentSection = section.title;
+        }
+      }
+    });
+
+    if (currentSection && currentSection !== selectedMenu) {
+      setSelectedMenu(currentSection);
+    }
+  }, [selectedMenu]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
+
   return (
     <AppBar
       sx={{
@@ -192,7 +227,7 @@ export default function Header() {
           width: `calc(100% - ${0 + 0}px)`,
           height: HEADER.H_DASHBOARD_DESKTOP_OFFSET + 5,
           ...(isOffset && {
-            height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
+            height: HEADER.H_DASHBOARD_DESKTOP_OFFSET+ 5,
           }),
           ...(isNavHorizontal && {
             width: 1,

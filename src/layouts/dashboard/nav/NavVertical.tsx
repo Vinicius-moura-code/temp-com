@@ -12,6 +12,7 @@ import { NavSectionVertical } from "../../../components/nav-section";
 //
 import navConfig from "./config-navigation";
 import CustomNavToggleButton from "./CustomNavToggleButton";
+import { pxToRem } from "../../../theme/typography";
 
 // ----------------------------------------------------------------------
 
@@ -54,7 +55,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         <CustomNavToggleButton />
       </Stack>
 
-      <NavSectionVertical data={navConfig} />
+      <NavSectionVertical data={navConfig}  />
 
       <Box sx={{ flexGrow: 1 }} />
 
@@ -80,7 +81,8 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
               zIndex: 0,
               width: NAV.W_DASHBOARD,
               bgcolor: "transparent",
-              borderRightStyle: "dashed",
+              borderRightStyle: "solid",
+              borderRightColor: "transparent"
             },
           }}
         >
@@ -96,7 +98,9 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
           }}
           PaperProps={{
             sx: {
-              width: NAV.W_DASHBOARD,
+              width: "100vw",
+              background: "#F1F7FF",
+              p: pxToRem(16)
             },
           }}
         >

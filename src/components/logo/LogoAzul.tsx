@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { Box, Link, BoxProps } from "@mui/material";
+import { PATH_DASHBOARD } from "../../routes/paths";
 
 export interface LogoProps extends BoxProps {
   disabledLink?: boolean;
@@ -27,7 +28,7 @@ const LogoAzul = forwardRef<HTMLDivElement, LogoProps>(
     return (
       <Link
         component={RouterLink}
-        to="/"
+        to={PATH_DASHBOARD.general.app}
         sx={{ display: "contents" }}
         aria-label="return to home"
       >

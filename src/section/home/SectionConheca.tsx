@@ -91,7 +91,6 @@ export default function SectionConheca({ id }: { id: string }) {
             videoUrlDesktop="https://www.lightcom.com.br/assets/videos/ComercializadoraEnergia.mp4"
             videoUrlMobile="https://www.lightcom.com.br/assets/videos/ComercializadoraEnergia-mobile.mp4"
           />
-
           <Typography
             component="span"
             sx={{

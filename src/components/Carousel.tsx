@@ -3,17 +3,25 @@ import useEmblaCarousel from "embla-carousel-react";
 import { Box, Button } from "@mui/material";
 
 interface CarouselProps {
-  cards: React.ReactNode[]; // ou JSX.Element[]
+  cards: React.ReactNode[]; 
+  visibledOrden?: boolean;
+  onSelectedChange?: (index: number) => void;
 }
 
-const Carousel: React.FC<CarouselProps> = ({ cards }) => {
+const Carousel: React.FC<CarouselProps> = ({ cards, visibledOrden = true,onSelectedChange }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+    const index = emblaApi.selectedScrollSnap();
+    setSelectedIndex(index);
+  
+    if (onSelectedChange) {
+      onSelectedChange(index);
+    }
+  }, [emblaApi, onSelectedChange]);
+  
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -23,13 +31,14 @@ const Carousel: React.FC<CarouselProps> = ({ cards }) => {
   return (
     <Box>
       <Box ref={emblaRef} sx={{ overflow: "hidden", width: "100%" }}>
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex",gap: !visibledOrden? "8px": "0px" }}>
           {cards.map((card, index) => (
             <Box
               key={index}
               sx={{
-                flex: "0 0 100%",
+                flex: visibledOrden ? "0 0 100%": "0 0 50%",
                 boxSizing: "border-box",
+                
               }}
             >
               {card}
@@ -37,7 +46,7 @@ const Carousel: React.FC<CarouselProps> = ({ cards }) => {
           ))}
         </Box>
       </Box>
-      {cards.length > 1 && (
+      {cards.length > 1 && visibledOrden && (
         <Box
           sx={{
             display: "flex",

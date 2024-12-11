@@ -1,7 +1,7 @@
 // routes
 import { PATH_AUTH } from "../routes/paths";
-// utils
-import axios from "../utils/axios";
+import axiosInstance from "../utils/axios";
+
 
 // ----------------------------------------------------------------------
 
@@ -32,18 +32,21 @@ export const isValidToken = (accessToken: string) => {
 
 // ----------------------------------------------------------------------
 
-export const tokenExpired = (exp: number) => {  
+export const tokenExpired = (exp: number) => {
   const currentTime = Date.now();
-  const timeLeft = exp * 1000 - currentTime;
+
+  const bufferTime = 5 * 60 * 1000;
+  const timeLeft = Math.max(0, exp * 1000 - currentTime - bufferTime);
 
   setTimeout(async () => {
     try {
-      const keepConnected = localStorage.getItem("KeepConnected");
-      if (JSON.parse(keepConnected!)) {
+      const keepConnected = JSON.parse(
+        localStorage.getItem("KeepConnected") || "false"
+      );
+      if (keepConnected) {
         await handleTokenRefresh();
       } else {
         sessionExpired();
-        localStorage.removeItem("KeepConnected");
       }
     } catch (error) {
       console.error(error);
@@ -54,46 +57,46 @@ export const tokenExpired = (exp: number) => {
 
 const sessionExpired = () => {
   localStorage.removeItem("accessToken");
-  setSession(null, null);
+  setSession(null);
   localStorage.setItem("sessionExpired", "true");
   window.location.href = PATH_AUTH.login;
 };
+
 // ----------------------------------------------------------------------
 
-export const setSession = (
-  accessToken: string | null,
-  refreshToken: string | null = null
-) => {
+export const setSession = (accessToken: string | null) => {
   if (accessToken) {
     localStorage.setItem("accessToken", accessToken);
-    if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
-
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
     const { exp } = jwtDecode(accessToken);
     tokenExpired(exp);
   } else {
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-
-    delete axios.defaults.headers.common.Authorization;
+    delete axiosInstance.defaults.headers.common.Authorization;
   }
 };
 
+
 export const handleTokenRefresh = async () => {
-  const refreshToken = localStorage.getItem("refreshToken");
   const token = localStorage.getItem("accessToken");
 
   if (!token) throw new Error("No access Token available");
-  if (!refreshToken) throw new Error("No refresh token available");
 
-  const tokenDecode = jwtDecode(token!);
+  try {
+    const response = await axiosInstance.post("/v1/auth/refresh-token");
 
-  const response = await axios.post("/v1/auth/refresh-token", {
-    email: tokenDecode?.email,
-    refreshToken,
-  });
+    const { token: newAccessToken } = response.data.response;
 
-  const { token: newOken, refreshToken: newRefreshToken } = response.data;
-  setSession(newOken, newRefreshToken);
+    if (newAccessToken) {
+      setSession(newAccessToken);
+    } else {
+      sessionExpired();
+      throw new Error("Invalid tokens received from server");
+    }
+  } catch (error) {
+    console.error("Failed to refresh token:", error);
+    sessionExpired();
+  }
 };
+
