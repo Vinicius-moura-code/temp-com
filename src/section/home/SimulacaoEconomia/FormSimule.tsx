@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import TelephoneField from "../../../components/FormComponents";
+import TelephoneField, { CnpjField } from "../../../components/FormComponents";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -60,6 +60,7 @@ const schema = z.object({
   }),
   aceiteEmailMarketing: z.boolean().optional(),
   fatura: z.string().nullable().optional(),
+  cnpj: z.string(),
 });
 
 interface IDist {
@@ -86,7 +87,7 @@ export default function FormSimule({ showAlert }: FormProps) {
       });
       setDistribuidoras(response.data);
     } catch (error) {
-      console.log("Deu erro: ", error);
+      console.error(error);
     }
   };
 
@@ -113,6 +114,7 @@ export default function FormSimule({ showAlert }: FormProps) {
       aceiteEmailMarketing: false,
       unidadeConsumidora: false,
       fatura: "",
+      cnpj: "",
     },
   });
 
@@ -148,17 +150,18 @@ export default function FormSimule({ showAlert }: FormProps) {
       arquivoFatura: data.fatura?.length > 0 ? arquivoFatura : null,
       aceitePrivacidade: data.aceitePrivacidade,
       aceiteEmailMarketing: data.aceiteEmailMarketing,
+      cnpj: data.cnpj,
     };
 
     try {
-      const response = await axiosInstance.post("/v1/Cliente", body);
+      const response = await axiosInstance.post("/v2/Cliente", body);
       setResponseForm(response.data);
 
       showAlert("Dados enviados com sucesso!", "success");
       setOpen(true);
       reset();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       showAlert("Erro ao enviar dados.", "warning");
     } finally {
       setLoading(false);
@@ -209,9 +212,11 @@ export default function FormSimule({ showAlert }: FormProps) {
                 lineHeight: "1.875rem",
                 color: "#fff",
                 marginBottom: "3rem",
+                textAlign: "justify",
               }}
             >
-              Faça o cálculo de quanto você pode economizar com a Light&nbsp;COM
+              Preencha o formulário e dê o primeiro passo para a economia e
+              sustentabilidade do seu negócio
             </Typography>
           </Grid>
 
@@ -273,6 +278,16 @@ export default function FormSimule({ showAlert }: FormProps) {
                 error={errors.distribuidora}
                 helperText={errors.distribuidora?.message}
                 options={distribuidoras.map((item) => item.label)}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 12 }} sx={{ pt: "12px" }}>
+              <CustomTextField
+                label="CNPJ"
+                control={control}
+                name="cnpj"
+                error={errors.cnpj}
+                helperText={errors.cnpj?.message}
+                inputComponent={CnpjField as any}
               />
             </Grid>
             {/* Valor Mensal */}
@@ -513,27 +528,45 @@ export default function FormSimule({ showAlert }: FormProps) {
             </Grid>
 
             <Grid size={12} container justifyContent="center">
-              <LoadingButton
-                size="medium"
-                type="submit"
-                loading={loading}
-                loadingPosition="center"
-                endIcon={<ArrowForwardIcon />}
-                variant="contained"
-                sx={{
-                  bgcolor: "#F7A600",
-                  //display: "inline-flex",
-                  alignItems: "center",
-                  borderRadius: "1.563rem",
-                  padding: isMobile ? "10px 16px" : "16px 24px",
-                  minHeight: isMobile ? pxToRem(50) : "3.125rem",
-                  minWidth: isMobile ? pxToRem(20) : "25rem",
-                  fontSize: isMobile ? 14 : 15,
+              <div
+                style={{
+                  position: "relative",
                 }}
               >
-                Solicitar Simulação de Economia
-              </LoadingButton>
-
+                <img
+                  src="/assets/abelha_formulario.png"
+                  alt="bee text"
+                  className="corner-image"
+                  style={{
+                    position: "absolute",
+                    top: -15,
+                    right: isMobile ? -50 : -73,
+                    width: isMobile ? "70px" : "100px",
+                    height: "auto",
+                    zIndex: 9999,
+                  }}
+                ></img>
+                <LoadingButton
+                  size="medium"
+                  type="submit"
+                  loading={loading}
+                  loadingPosition="center"
+                  endIcon={<ArrowForwardIcon />}
+                  variant="contained"
+                  sx={{
+                    bgcolor: "#F7A600",
+                    //display: "inline-flex",
+                    alignItems: "center",
+                    borderRadius: "1.563rem",
+                    padding: isMobile ? "10px 16px" : "16px 24px",
+                    minHeight: isMobile ? pxToRem(50) : "3.125rem",
+                    minWidth: isMobile ? pxToRem(20) : "25rem",
+                    fontSize: isMobile ? 14 : 15,
+                  }}
+                >
+                  Solicitar Simulação de Economia
+                </LoadingButton>
+              </div>
               {/* <Button
                       type="submit"
                       variant="contained"

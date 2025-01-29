@@ -58,7 +58,6 @@ const CookieConsent = () => {
             variant={isMobile ? "text" : "outlined"}
             color="primary"
             size="small"
-            onClick={() => console.log("Configurar cookies")}
             sx={buttonstyled}
           >
             Configurar

@@ -13,10 +13,11 @@ const SimulaEconomiaButton = (props: PropsSeButton) => {
       sx={{
         width: 162,
         height: 40,
-        color: "#3677E0",
+        color: x => x.palette.common.black,
         backgroundColor: "#FFFFFF",
         fontSize: "0.875rem",
         fontWeight: 500,
+        border: "none",
         borderRadius: "25px",
         letterSpacing: 0.5,
       }}

@@ -1,9 +1,9 @@
 import {
   SectionConheca,
-  SectionEnergiaRenovavel,
+  // SectionEnergiaRenovavel,
   SectionPerguntasFrequentes,
   SectionSimulacaoEconomia,
-  SectionMercadoLivreDeEnergia,
+  // SectionMercadoLivreDeEnergia,
 } from "../section/home";
 import { Helmet } from "react-helmet-async";
 import SectionOQueFalamDeNos from "../section/home/SectionOQueFalamDeNos";
@@ -41,10 +41,10 @@ export default function HomePage() {
       <SectionSimulacaoEconomia id="simulacao-economia" />
       <SectionConheca id="conheca" />
 
-      <SectionEnergiaRenovavel id="EnergiaRenovavel" />
+      {/* <SectionEnergiaRenovavel id="EnergiaRenovavel" /> */}
       <SectionComALightCom />
 
-      <SectionMercadoLivreDeEnergia id="mercado-livre-energia" />
+      {/* <SectionMercadoLivreDeEnergia id="mercado-livre-energia" /> */}
       <SectionPerguntasFrequentes id="perguntas-frequentes" />
       <SectionOQueFalamDeNos id="falam-de-nos" />
     </>

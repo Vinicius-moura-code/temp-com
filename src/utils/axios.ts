@@ -61,22 +61,25 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response.status === 429) {
+    const status = error.response?.status;
+    const data = error.response?.data;
+   
+    if (status === 429) {
       return Promise.reject({
         status: 429,
         message: "Tente novamente mais tarde.",
       });
     }
-
-    if (error.response.status === 500) {
+ 
+    if (status === 500) {
       return Promise.reject({
         status: 500,
         message:
           "Tivemos um problema interno. Por favor, tente novamente mais tarde.",
       });
     }
-
-    return Promise.reject(error);
+ 
+    return Promise.reject(data);
   }
 );
 

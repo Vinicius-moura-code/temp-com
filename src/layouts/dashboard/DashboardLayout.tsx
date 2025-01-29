@@ -118,7 +118,7 @@ export default function DashboardLayout() {
             height: {
               md: "auto",
               xl: "auto",
-              xs: "100vh",
+              xs: "100%",
             },
           }}
         >

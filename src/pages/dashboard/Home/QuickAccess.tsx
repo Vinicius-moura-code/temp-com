@@ -62,6 +62,7 @@ const QuickAccess = () => {
         {access.map((card, index) =>
           isMobile ? (
             <Box
+            key={index}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -78,7 +79,7 @@ const QuickAccess = () => {
                   p: pxToRem(0),
                   gap: pxToRem(10),
                 }}
-                key={index}
+                
               >
                 <CardActionArea
                   onClick={() => {

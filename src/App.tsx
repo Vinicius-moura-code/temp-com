@@ -13,6 +13,7 @@ import updateLocale from "dayjs/plugin/updateLocale";
 
 import { AuthProvider } from "./auth/JwtContext";
 import SnackbarProvider from "./components/snackbar";
+import ReportsProvider from "./providers/Reports/ReportsProvider";
 
 dayjs.extend(updateLocale);
 dayjs.updateLocale("pt-br", {
@@ -33,9 +34,11 @@ function App() {
               <MotionLazyContainer>
                 <ThemeProvider>
                   <ThemeSettings>
-                    <SnackbarProvider>
-                      <Routes />
-                    </SnackbarProvider>
+                    <ReportsProvider>
+                      <SnackbarProvider>
+                        <Routes />
+                      </SnackbarProvider>
+                    </ReportsProvider>
                   </ThemeSettings>
                 </ThemeProvider>
               </MotionLazyContainer>

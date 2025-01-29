@@ -1,23 +1,21 @@
-import dayjs from "dayjs";
 import { IEconomyReport } from "./types";
 
 
 
-export function getChartSerie(reportData: IEconomyReport, type: "anual" | "mensal" ) {
+export function getChartSerie(reportData: IEconomyReport,month: number , type: "anual" | "mensal" ) {
   let chartSeries = [];
-
   if (type == "mensal") {
     const chartSeriesMensal = [
       {
         name: "ACR",
         data:
-          reportData?.yearlyEconomyChart?.map((item) => item.acr)[dayjs().month() - 1]  ||
+          reportData?.yearlyEconomyChart?.map((item) => item.acr)[month]  ||
           [],
       },
       {
         name: "ACL",
         data:
-          reportData?.yearlyEconomyChart?.map((item) => item.acl)[dayjs().month() - 1] ||
+          reportData?.yearlyEconomyChart?.map((item) => item.acl)[month] ||
           [],
       },
 
@@ -25,7 +23,7 @@ export function getChartSerie(reportData: IEconomyReport, type: "anual" | "mensa
         name: "Resultado",
         data:
           reportData?.yearlyEconomyChart?.map((item) => item.result)[
-            dayjs().month() - 1
+            month
           ] || [],
       }
     ];

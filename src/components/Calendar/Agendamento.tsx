@@ -180,7 +180,7 @@ const Agendamento: React.FC<CalendarProps> = ({
       onAgendarClick(body);
       reset();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setAvailableSchedule([]);
     } finally {
       setLoadingButton(false);
@@ -216,7 +216,7 @@ const Agendamento: React.FC<CalendarProps> = ({
       );
       setAvailableSchedule(orderBayStartDate);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setAvailableSchedule([]);
     } finally {
       setLoading(false);

@@ -27,7 +27,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useCallback, useEffect, useState } from "react";
 import { menuItems } from "../nav-config";
 import SimulaEconomiaButton from "./SimulaEconomiaButton";
-import LoginButton from "./LoginButton";
+// import LoginButton from "./LoginButton";
 import { useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
@@ -123,7 +123,7 @@ const handleMenuClick = (menu: any) => {
                   fontWeight: 400,
                   lineHeight: "16.5px",
                   textAlign: "center",
-                  color: theme.palette.common.white,
+                  color: theme.palette.common.black,
                   borderRadius: 0,
                   padding: "8px 16px",
                   paddingLeft: 0,
@@ -163,7 +163,7 @@ const handleMenuClick = (menu: any) => {
               </Button>
             ))}
 
-            <LoginButton />
+            {/* <LoginButton /> */}
 
             <SimulaEconomiaButton
               onClick={() => handleMenuClick(menuItems[0])}
@@ -213,11 +213,11 @@ const handleMenuClick = (menu: any) => {
         boxShadow: "none",
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,
-        bgcolor: theme.palette.primary.main,
+        bgcolor: "#FDEB19",
 
         ...(isOffset && {
           ...bgBlur({
-            color: theme.palette.primary.main,
+            color: "#FDEB19",
           }),
         }),
         transition: theme.transitions.create(["height"], {
@@ -292,7 +292,7 @@ const handleMenuClick = (menu: any) => {
 
           <ListItem>
             <ListItemButton>
-              <LoginButton />
+              {/* <LoginButton /> */}
             </ListItemButton>
           </ListItem>
         </List>

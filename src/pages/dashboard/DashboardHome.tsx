@@ -73,10 +73,9 @@ export default function DashboardHome() {
           </Grid>
         </Grid>
 
-        <Paper elevation={3} sx={{ padding: 2 }}>
+        <Paper elevation={3} sx={{ padding: 4 }}>
           <RelatorioEconomia />
         </Paper>
-        <br/>
       </Stack>
 
       {/* <Grid

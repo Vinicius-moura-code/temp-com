@@ -25,6 +25,7 @@ import { useAuthContext } from "../../auth/useAuthContext";
 import { formatToDate } from "../../utils/format";
 import dayjs from "dayjs";
 import { enqueueSnackbar } from "../../components/snackbar";
+import EmptyContent from "../../components/empty-content";
 
 const columns = [
   {
@@ -111,7 +112,6 @@ const getStatus = (item: contratoProps) => {
     dataAtual.isAfter(dataInicio) && dataAtual.isBefore(dataFim)
       ? "Ativo"
       : "Inativo";
-  // console.log(status);
   return status;
 };
 
@@ -219,7 +219,6 @@ const renderCards = (contracts: contratoProps[]) => {
   ));
 };
 
-
 const GridContratosTable = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -245,12 +244,19 @@ const GridContratosTable = () => {
 
   const getAddress = (): string => {
     const address = user?.address;
-    return `${address?.street ?? ''} ${address?.number ?? ''}, ${address?.neighborhood ?? ''}, ${address?.city ?? ''}, ${address?.state ?? ''}${address?.zipcode ? ` - CEP ${address.zipcode}` : ''}`.trim();
+    return `${address?.street ?? ""} ${address?.number ?? ""}, ${
+      address?.neighborhood ?? ""
+    }, ${address?.city ?? ""}, ${address?.state ?? ""}${
+      address?.zipcode ? ` - CEP ${address.zipcode}` : ""
+    }`.trim();
   };
 
   useEffect(() => {
     getMyContracts();
   }, [getMyContracts]);
+
+
+  
 
   return (
     <>
@@ -265,6 +271,13 @@ const GridContratosTable = () => {
         >
           <CircularProgress />
         </Box>
+      ) : contracts?.length == 0 ? (
+        <EmptyContent
+          title="Nenhum Contrato encontrado."
+          sx={{
+            "& span.MuiBox-root": { height: 160 },
+          }}
+        />
       ) : isMobile ? (
         <Carousel cards={renderCards(contracts)} />
       ) : (

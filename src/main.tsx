@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import TagManager from 'react-gtm-module';
@@ -13,7 +13,7 @@ if (HOST_GOOGLE_TAG && HOST_GOOGLE_TAG.trim() !== "") {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  // <StrictMode>
     <App />
-  </StrictMode>
+  // </StrictMode>
 );

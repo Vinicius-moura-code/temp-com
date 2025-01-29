@@ -11,12 +11,20 @@ const Apresentacao = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-end",
         textAlign: "center",
         height: "100%",
-        width: "100%",
+        width: isMobile ? "100%" : 517,
         zIndex: 5,
+        pb: 15,
+
+        md: {
+          alignItems: "center",
+        },
+        sm: {
+          alignItems: "center",
+        },
+        alignItems: "center",
       }}
     >
       <Typography
@@ -24,96 +32,110 @@ const Apresentacao = () => {
         sx={{
           fontFamily: "Rubik",
           fontWeight: 400,
-          fontSize: isMobile?pxToRem(20.83) : pxToRem(29.42),
-          lineHeight: isMobile?pxToRem(20.83) : pxToRem(29.42),
+          fontSize: isMobile ? pxToRem(20.83) : pxToRem(24),
+          lineHeight: isMobile ? pxToRem(60) : pxToRem(45),
           color: "#FFFFFF",
           letterSpacing: 0.5,
+          whiteSpace: "nowrap",
           mb: {
-            md: 1.5
+            md: 1.5,
           },
-          pt:{
+          pt: {
             xs: pxToRem(96),
-            md: 0
+            md: 0,
           },
           textShadow: textShadow,
         }}
       >
-        A CONTA DE ENERGIA DO
+        A CONTA DE ENERGIA DO SEU NEGÓCIO
       </Typography>
-      <Typography
-        component="p"
-        sx={{
-          fontFamily: "Rubik",
-          fontWeight: 400,
-          fontSize: isMobile?pxToRem(24) : pxToRem(37.16), 
-          lineHeight:isMobile?pxToRem(24) : pxToRem(37.16),
-          color: "#FFFFFF",
-          letterSpacing: 3,
-          mb: 2,
-          textShadow: textShadow,
-        }}
-      >
-        SEU NEGÓCIO ATÉ
-      </Typography>
+
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "end",
           textAlign: "center",
           bgcolor: "#F7A600",
-          padding: "16px, 0px",
-          width: isMobile ? 250 : 450,
-          height:isMobile ? 120: 154,
+          padding: 1,
+          width: isMobile ? "max-content" : "100%",
+          //height: isMobile ? 120 : 154,
           mb: 2,
+
+          position: "relative",
         }}
       >
         <Typography
           component="h1"
           sx={{
             fontFamily: "Rubik",
-            fontWeight: 700,
-            fontSize: isMobile?pxToRem(80) : pxToRem(164.11), 
-            lineHeight: isMobile?pxToRem(88) : pxToRem(180.53), 
+            fontWeight: 500,
+            fontSize: isMobile ? pxToRem(50) : pxToRem(70),
+            lineHeight: isMobile ? pxToRem(55) : pxToRem(60),
             color: "#fff",
-            WebkitBackgroundClip: "text",
+            // WebkitBackgroundClip: "text",
+
+            mr: isMobile ? 2 : 3,
           }}
         >
-          35%
+          ATÉ
         </Typography>
+        <Typography
+          component="h1"
+          sx={{
+            fontFamily: "Rubik",
+            fontWeight: 500,
+            fontSize: isMobile ? pxToRem(90) : pxToRem(150),
+            lineHeight: isMobile ? pxToRem(80) : pxToRem(115),
+            color: "#fff",
+            // WebkitBackgroundClip: "text",
+          }}
+        >
+          40%
+        </Typography>
+        <img
+          src="/assets/abelha_texto.png"
+          alt="bee text"
+          className="corner-image"
+          style={{
+            position: "absolute",
+            top: isMobile ? -21 : -30,
+            right: isMobile ? -55 : -65,
+            width: isMobile ? "70px" : "100px",
+            height: "auto",
+          }}
+        ></img>
       </Box>
+
       <Typography
         component="p"
         sx={{
           fontFamily: "Rubik",
-          fontWeight: 400,
-          fontSize: isMobile?pxToRem(32) : pxToRem(49.54), 
-          lineHeight: isMobile?pxToRem(32) : pxToRem(49.54), 
+          fontWeight: 600,
+          fontSize: isMobile ? pxToRem(32) : pxToRem(53),
+          lineHeight: isMobile ? pxToRem(32) : pxToRem(49.54),
           color: "#FFFFFF",
           letterSpacing: "0.203em",
           mb: 1,
           textShadow: textShadow,
         }}
       >
-        MAIS BARATA
+        MAIS BARATA,
       </Typography>
       <Typography
         component="p"
         sx={{
           fontFamily: "Rubik",
           fontWeight: 400,
-          fontSize:isMobile?pxToRem(32) :  pxToRem(49.54), 
-          lineHeight:isMobile?pxToRem(32) :  pxToRem(49.54), 
+          fontSize: isMobile ? pxToRem(20.83) : pxToRem(28),
+          lineHeight: isMobile ? pxToRem(20.83) : pxToRem(29.42),
           color: "#FFFFFF",
-          letterSpacing: "0.19em",
-          pb:{
-            xs: pxToRem(30),
-            md: 0
-          },
+          letterSpacing: 0.5,
+
           textShadow: textShadow,
         }}
       >
-        E RENOVÁVEL
+        COM ENERGIA LIMPA E RENOVÁVEL.
       </Typography>
     </Box>
   );
