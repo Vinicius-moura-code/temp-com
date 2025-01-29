@@ -32,7 +32,7 @@ const Apresentacao = () => {
         sx={{
           fontFamily: "Rubik",
           fontWeight: 400,
-          fontSize: isMobile ? pxToRem(20.83) : pxToRem(24),
+          fontSize: isMobile ? pxToRem(20) : pxToRem(24),
           lineHeight: isMobile ? pxToRem(60) : pxToRem(45),
           color: "#FFFFFF",
           letterSpacing: 0.5,
@@ -100,8 +100,8 @@ const Apresentacao = () => {
           style={{
             position: "absolute",
             top: isMobile ? -21 : -30,
-            right: isMobile ? -55 : -65,
-            width: isMobile ? "70px" : "100px",
+            right: isMobile ? -40 : -65,
+            width: isMobile ? "60px" : "100px",
             height: "auto",
           }}
         ></img>
