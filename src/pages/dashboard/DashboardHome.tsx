@@ -5,7 +5,6 @@ import QuickAccess from "./Home/QuickAccess";
 import { Helmet } from "react-helmet-async";
 import MfaProtectedAccountModal from "../../section/auth/MfaProtectedAccountModal";
 import RelatorioEconomia from "../../components/Reports/EconomyReport";
-import ConsumptionUnit from "./Home/ConsumptionUnit";
 
 export default function DashboardHome() {
   const theme = useTheme();
@@ -69,9 +68,8 @@ export default function DashboardHome() {
               },
             }}
           >
-            <ConsumptionUnit />
           </Grid>
-        </Grid>
+        </Grid>ConsumptionUnitMobile
 
         <Paper elevation={3} sx={{ padding: 4 }}>
           <RelatorioEconomia />

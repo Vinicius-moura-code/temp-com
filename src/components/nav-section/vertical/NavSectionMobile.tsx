@@ -18,7 +18,7 @@ import React, { useState } from "react";
 import { PATH_AUTH, PATH_DASHBOARD } from "../../../routes/paths";
 import { useAuthContext } from "../../../auth/useAuthContext";
 import { useSnackbar } from "../../snackbar";
-import ConsumptionUnitMobile from "../../../pages/dashboard/Home/ConsumptionUnitMobile";
+
 import { Version } from "../../Version/Version";
 
 const Menu = [
@@ -60,13 +60,12 @@ const Menu = [
 ];
 
 const NavSectionMobile = () => {
-  const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const { logout } = useAuthContext();
   const navigate = useNavigate();
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const handleBackClick = () => {
     navigate(0);
@@ -90,7 +89,7 @@ const NavSectionMobile = () => {
 
   return (
     <>
-      <ConsumptionUnitMobile open={open} onClose={handleClose} />
+
       <Stack direction="column" alignItems="flex-start" spacing={3}>
         <IconButton
           onClick={handleBackClick}

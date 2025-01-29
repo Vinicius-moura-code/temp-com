@@ -18,7 +18,7 @@ import {
 // import AuthFirstAccessPage from "../pages/auth/AuthFirstAccessPage";
 // import ContractOfAdhesionPage from "../pages/dashboard/ContractOfAdhesionPage";
 // import InvoicePage from "../pages/dashboard/InvoicePage";
-import MainLayoutCookie from "../layouts/main/MainLayoutCookie";
+//import MainLayoutCookie from "../layouts/main/MainLayoutCookie";
 
 export default function Router() {
   return useRoutes([
@@ -88,10 +88,10 @@ export default function Router() {
       element: <MainLayout />,
       children: [{ element: <HomePage />, index: true }],
     },
-    {
-      path: "cookies",
-      element: <MainLayoutCookie />,
-    },
+    // {
+    //   path: "cookies",
+    //   element: <MainLayoutCookie />,
+    // },
     { path: "*", element: <Navigate to="/404" replace /> },
   ]);
 }
