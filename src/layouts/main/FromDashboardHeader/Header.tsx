@@ -49,7 +49,7 @@ export default function Header() {
 
   const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal;
   const navigate = useNavigate();
-  
+
   const handleScrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -59,19 +59,16 @@ export default function Header() {
     }
   };
 
-  
-const handleMenuClick = (menu: any) => {
-  
-  if (location.pathname === '/cookies') {
-    navigate('/'); 
-    location.reload();
-  } 
-    
+  const handleMenuClick = (menu: any) => {
+    if (location.pathname === "/cookies") {
+      navigate("/");
+      location.reload();
+    }
+
     handleScrollToSection(menu.sectionId);
     setSelectedMenu(menu.title);
     toggleDrawer();
-  
-};
+  };
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -103,7 +100,7 @@ const handleMenuClick = (menu: any) => {
         flexGrow={1}
         direction="row"
         alignItems="center"
-        justifyContent="end"
+        justifyContent="flex-end"
         spacing={{
           xs: 0.5,
           sm: 1.5,
@@ -225,9 +222,10 @@ const handleMenuClick = (menu: any) => {
         }),
         ...(isDesktop && {
           width: `calc(100% - ${0 + 0}px)`,
+          px: 25,
           height: HEADER.H_DASHBOARD_DESKTOP_OFFSET + 5,
           ...(isOffset && {
-            height: HEADER.H_DASHBOARD_DESKTOP_OFFSET+ 5,
+            height: HEADER.H_DASHBOARD_DESKTOP_OFFSET + 5,
           }),
           ...(isNavHorizontal && {
             width: 1,
@@ -291,9 +289,7 @@ const handleMenuClick = (menu: any) => {
           ))}
 
           <ListItem>
-            <ListItemButton>
-              {/* <LoginButton /> */}
-            </ListItemButton>
+            <ListItemButton>{/* <LoginButton /> */}</ListItemButton>
           </ListItem>
         </List>
       </Drawer>

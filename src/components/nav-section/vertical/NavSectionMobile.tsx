@@ -13,7 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { pxToRem } from "../../../theme/typography";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
-import AccountPopover from "../../../layouts/dashboard/header/AccountPopover";
+//import AccountPopover from "../../../layouts/dashboard/header/AccountPopover";
 import React, { useState } from "react";
 import { PATH_AUTH, PATH_DASHBOARD } from "../../../routes/paths";
 import { useAuthContext } from "../../../auth/useAuthContext";
@@ -128,7 +128,7 @@ const NavSectionMobile = () => {
           justifyContent="flex-end"
           spacing={0.5}
         >
-          <AccountPopover visibleWelcome={false} />
+          {/* <AccountPopover visibleWelcome={false} /> */}
         </Stack>
 
         <Button

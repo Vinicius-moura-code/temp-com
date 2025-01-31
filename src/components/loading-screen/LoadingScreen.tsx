@@ -8,9 +8,9 @@ import useResponsive from "../../hooks/useResponsive";
 // config
 import { NAV, HEADER } from "../../config-global";
 //
-import Logo from "../logo";
 import ProgressBar from "../progress-bar";
 import { useSettingsContext } from "../settings";
+import { LogoBranca } from "../logo";
 
 // ----------------------------------------------------------------------
 
@@ -89,7 +89,7 @@ export default function LoadingScreen() {
                   borderRadius: "10%",
                 }}
               >
-                <Logo disabledLink sx={{ width: 64, height: 64 }} />
+                <LogoBranca disabledLink sx={{ width: 64, height: 64 }} />
               </Box>
             </m.div>
 

@@ -183,23 +183,24 @@ export default function FormSimule({ showAlert }: FormProps) {
         <Box
           sx={{
             //width: 595,
+            minWidth: isMobile ? "100%" : 525,
             background: "#FCFDFE",
             borderRadius: "3rem",
-            marginTop: "1em",
+            //marginTop: "1em",
             //border: "1px solid #E8E8E8",
             boxShadow: "0px 16px 44px 0px #7090B040",
             textAlign: "center",
-            padding: "2rem",
-            paddingTop: "48px",
+            padding: "1.5rem",
+            paddingTop: "12px",
             color: "white",
             position: "relative",
             ...bgBlur({
-              color: "#3677E0E5",
+              color: "#1068b1",
 
-              // blur: 1,
-              // opacity: 0.5,
+              blur: 0.2,
+              opacity: 1,
             }),
-            zIndex: 2,
+            //zIndex: 2,
           }}
         >
           <Grid container size={12}>
@@ -211,17 +212,17 @@ export default function FormSimule({ showAlert }: FormProps) {
                 fontWeight: 400,
                 lineHeight: "1.875rem",
                 color: "#fff",
-                marginBottom: "3rem",
+                marginBottom: "1.5rem",
                 textAlign: "justify",
               }}
             >
-              Preencha o formulário e dê o primeiro passo para a economia e
-              sustentabilidade do seu negócio
+              Preencha o formulário abaixo e, além de garantir a economia e
+              sustentabilidade dos seu negócio , ganhe pontos no BEES!
             </Typography>
           </Grid>
 
           {/* Formulário */}
-          <Grid container spacing={2}>
+          <Grid container spacing={1.5}>
             <Grid size={{ xs: 12, md: 6 }}>
               <CustomTextField
                 label="Razão Social"
@@ -269,7 +270,14 @@ export default function FormSimule({ showAlert }: FormProps) {
                 helperText={errors.email?.message}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid
+              size={{ xs: 12, md: 6 }}
+              sx={{
+                ...(isMobile && {
+                  mb: 1.3,
+                }),
+              }}
+            >
               <CustomSelect
                 label="Distribuidoras"
                 control={control}
@@ -280,7 +288,7 @@ export default function FormSimule({ showAlert }: FormProps) {
                 options={distribuidoras.map((item) => item.label)}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 12 }} sx={{ pt: "12px" }}>
+            <Grid size={{ xs: 12, md: 12 }}>
               <CustomTextField
                 label="CNPJ"
                 control={control}
@@ -539,9 +547,9 @@ export default function FormSimule({ showAlert }: FormProps) {
                   className="corner-image"
                   style={{
                     position: "absolute",
-                    top: -15,
-                    right: isMobile ? -50 : -73,
-                    width: isMobile ? "70px" : "100px",
+                    top: -20,
+                    right: isMobile ? -50 : -60,
+                    width: isMobile ? "70px" : "90px",
                     height: "auto",
                     zIndex: 9999,
                   }}
@@ -564,26 +572,9 @@ export default function FormSimule({ showAlert }: FormProps) {
                     fontSize: isMobile ? 14 : 15,
                   }}
                 >
-                  Solicitar Simulação de Economia
+                  Economize e ganhe pontos!
                 </LoadingButton>
               </div>
-              {/* <Button
-                      type="submit"
-                      variant="contained"
-                      endIcon={<ArrowForwardIcon />}
-                      color="primary"
-                      id="clickSolicitar"
-                      sx={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        borderRadius: "1.563rem",
-                        padding: "16px 24px 16px 24px",
-                        height: "3.125rem",
-                        width: "25rem",
-                      }}
-                    >
-                      Solicitar Simulação de Economia
-                    </Button> */}
             </Grid>
           </Grid>
         </Box>
