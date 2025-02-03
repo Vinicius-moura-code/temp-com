@@ -27,7 +27,7 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
         component="section"
         id={id}
         sx={{
-          backgroundColor: "#F7F8FB",
+          backgroundColor: "#F9F9EB",
 
           padding: {
             sm: "clamp(45px, 5.80vw, 96px) 0",
