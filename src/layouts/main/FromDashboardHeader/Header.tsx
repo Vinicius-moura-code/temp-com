@@ -27,7 +27,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useCallback, useEffect, useState } from "react";
 import { menuItems } from "../nav-config";
 import SimulaEconomiaButton from "./SimulaEconomiaButton";
-// import LoginButton from "./LoginButton";
+import LoginButton from "./LoginButton";
 import { useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
@@ -49,7 +49,7 @@ export default function Header() {
 
   const isOffset = useOffSetTop(HEADER.H_DASHBOARD_DESKTOP) && !isNavHorizontal;
   const navigate = useNavigate();
-
+  
   const handleScrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -59,16 +59,19 @@ export default function Header() {
     }
   };
 
-  const handleMenuClick = (menu: any) => {
-    if (location.pathname === "/cookies") {
-      navigate("/");
-      location.reload();
-    }
-
+  
+const handleMenuClick = (menu: any) => {
+  
+  if (location.pathname === '/cookies') {
+    navigate('/'); 
+    location.reload();
+  } 
+    
     handleScrollToSection(menu.sectionId);
     setSelectedMenu(menu.title);
     toggleDrawer();
-  };
+  
+};
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -100,7 +103,7 @@ export default function Header() {
         flexGrow={1}
         direction="row"
         alignItems="center"
-        justifyContent="flex-end"
+        justifyContent="end"
         spacing={{
           xs: 0.5,
           sm: 1.5,
@@ -120,7 +123,7 @@ export default function Header() {
                   fontWeight: 400,
                   lineHeight: "16.5px",
                   textAlign: "center",
-                  color: theme.palette.common.black,
+                  color: theme.palette.common.white,
                   borderRadius: 0,
                   padding: "8px 16px",
                   paddingLeft: 0,
@@ -160,7 +163,7 @@ export default function Header() {
               </Button>
             ))}
 
-            {/* <LoginButton /> */}
+            <LoginButton />
 
             <SimulaEconomiaButton
               onClick={() => handleMenuClick(menuItems[0])}
@@ -210,11 +213,11 @@ export default function Header() {
         boxShadow: "none",
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,
-        bgcolor: "#FDEB19",
+        bgcolor: theme.palette.primary.main,
 
         ...(isOffset && {
           ...bgBlur({
-            color: "#FDEB19",
+            color: theme.palette.primary.main,
           }),
         }),
         transition: theme.transitions.create(["height"], {
@@ -222,10 +225,9 @@ export default function Header() {
         }),
         ...(isDesktop && {
           width: `calc(100% - ${0 + 0}px)`,
-          px: 25,
           height: HEADER.H_DASHBOARD_DESKTOP_OFFSET + 5,
           ...(isOffset && {
-            height: HEADER.H_DASHBOARD_DESKTOP_OFFSET + 5,
+            height: HEADER.H_DASHBOARD_DESKTOP_OFFSET+ 5,
           }),
           ...(isNavHorizontal && {
             width: 1,
@@ -289,7 +291,9 @@ export default function Header() {
           ))}
 
           <ListItem>
-            <ListItemButton>{/* <LoginButton /> */}</ListItemButton>
+            <ListItemButton>
+              <LoginButton />
+            </ListItemButton>
           </ListItem>
         </List>
       </Drawer>

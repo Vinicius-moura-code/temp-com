@@ -33,7 +33,7 @@ export default function Footer() {
 
             <Box>
               <Link
-                href="https://www.light.com.br/SitePages/page-aviso-de-privacidade.aspx"
+                href="/aviso-de-privacidade"
                 target="_blank"
                 sx={{
                   display: "block",
@@ -59,6 +59,34 @@ export default function Footer() {
                 }}
               >
                 Ética e compliance
+              </Link>
+              <Link
+                href="https://www.light.com.br/LightCOM/Documentos/ComercializacaoVarejista.pdf"
+                target="_blank"
+                sx={{
+                  display: "block",
+                  fontSize: pxToRem(14),
+                  fontWeight: 400,
+                  lineHeight: pxToRem(24),
+                  color: "#FFFFFF",
+                  my: 1,
+                }}
+              >
+                Contrato Padrão - Varejista
+              </Link>
+              <Link
+                href="https://www.light.com.br/LightCOM/Documentos/PCR.pdf"
+                target="_blank"
+                sx={{
+                  display: "block",
+                  fontSize: pxToRem(14),
+                  fontWeight: 400,
+                  lineHeight: pxToRem(24),
+                  color: "#FFFFFF",
+                  my: 1,
+                }}
+              >
+                Preço de Referência Comparável (PRC)
               </Link>
             </Box>
           </Grid>

@@ -6,18 +6,18 @@ export const menuItems = [
     sectionId: "simulacao-economia",
   },
   { title: "A Light COM", src: "", showIcon: false, sectionId: "conheca" },
-  // {
-  //   title: "Energia Renovável",
-  //   src: "",
-  //   showIcon: false,
-  //   sectionId: "EnergiaRenovavel",
-  // },
-  // {
-  //   title: "Mercado Livre de Energia",
-  //   src: "",
-  //   showIcon: false,
-  //   sectionId: "mercado-livre-energia",
-  // },
+  {
+    title: "Energia Renovável",
+    src: "",
+    showIcon: false,
+    sectionId: "EnergiaRenovavel",
+  },
+  {
+    title: "Mercado Livre de Energia",
+    src: "",
+    showIcon: false,
+    sectionId: "mercado-livre-energia",
+  },
   {
     title: "Perguntas Frequentes",
     src: "",

@@ -1,17 +1,17 @@
-import { AlertColor, Box, Card, Container } from "@mui/material";
+import { AlertColor, Box, Container, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useRef } from "react";
-//import { LazyLoadImage } from "react-lazy-load-image-component";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import Apresentacao from "./SimulacaoEconomia/Apresentacao";
 import FormSimule from "./SimulacaoEconomia/FormSimule";
 import SnackAlert from "../../components/snackbar/SnackAlert";
-//import { bgBlur } from "../../utils/cssStyles";
+import { bgBlur } from "../../utils/cssStyles";
 import useResponsive from "../../hooks/useResponsive";
 
 export default function SectionSimulacaoEconomia({ id }: { id: string }) {
   const isMobile = useResponsive("down", "sm");
   const snackAlertRef = useRef<any>(null);
-  //const theme = useTheme();
+  const theme = useTheme();
 
   const showAlert = (message: string, severity: AlertColor) => {
     if (snackAlertRef.current) {
@@ -27,50 +27,64 @@ export default function SectionSimulacaoEconomia({ id }: { id: string }) {
         component="section"
         id={id}
         sx={{
-          backgroundColor: "#F9F9EB",
-
-          padding: {
+          backgroundColor: {
+            md: "transparent",
+            sm: bgBlur({
+              color: theme.palette.primary.main,
+              blur: 1,
+              opacity: 0.5,
+            }),
+            xs: theme.palette.primary.main,
+            ...bgBlur({
+              color: theme.palette.primary.main,
+              blur: 1,
+              opacity: 0.5,
+            }),
+          },
+          padding:  {
             sm: "clamp(45px, 5.80vw, 96px) 0",
           },
-          pb: {
-            xs: 4,
+          pb:{
+            xs: 4
           },
           height: "100%",
-          pt: 6,
         }}
       >
-        <Container>
-          <Card
-            sx={{
-              borderRadius: 8,
-              ...(isMobile && {
-                pt: 3,
-              }),
-            }}
-          >
-            <Grid container>
-              <Grid
-                size={{ xs: 12, md: 6 }}
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Apresentacao />
-              </Grid>
+        <LazyLoadImage
+          alt="Background"
+          src={isMobile ? "/assets/SimulacaoEconomia/BackgroundSimuleMobile.png":  "/assets/SimulacaoEconomia/BackgroundSimule.png" }
+          effect="blur"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: 1,
+            //backgroundColor: "#3677E0",
+          }}
+        />
 
-              {/* Coluna da direita - Formulário */}
-              <Grid size={{ xs: 12, md: 6 }}>
-                <div
-                  style={{
-                    padding: isMobile ? "2rem 0 0 0" : "2rem 2rem 2rem 0",
-                  }}
-                >
-                  <FormSimule showAlert={showAlert} />
-                </div>
-              </Grid>
+        <Container>
+          <Grid container spacing={1}>
+            {/* Coluna da esquerda - Descrições */}
+            <Grid
+              size={{ xs: 12, md: 6 }}
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+
+            >
+              <Apresentacao />
             </Grid>
-          </Card>
+
+            {/* Coluna da direita - Formulário */}
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormSimule showAlert={showAlert} />
+            </Grid>
+          </Grid>
         </Container>
       </Box>
     </>

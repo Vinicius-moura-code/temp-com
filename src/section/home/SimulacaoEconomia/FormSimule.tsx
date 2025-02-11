@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import TelephoneField, { CnpjField } from "../../../components/FormComponents";
+import TelephoneField from "../../../components/FormComponents";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -60,7 +60,6 @@ const schema = z.object({
   }),
   aceiteEmailMarketing: z.boolean().optional(),
   fatura: z.string().nullable().optional(),
-  cnpj: z.string(),
 });
 
 interface IDist {
@@ -114,7 +113,6 @@ export default function FormSimule({ showAlert }: FormProps) {
       aceiteEmailMarketing: false,
       unidadeConsumidora: false,
       fatura: "",
-      cnpj: "",
     },
   });
 
@@ -150,11 +148,10 @@ export default function FormSimule({ showAlert }: FormProps) {
       arquivoFatura: data.fatura?.length > 0 ? arquivoFatura : null,
       aceitePrivacidade: data.aceitePrivacidade,
       aceiteEmailMarketing: data.aceiteEmailMarketing,
-      cnpj: data.cnpj,
     };
 
     try {
-      const response = await axiosInstance.post("/v2/Cliente", body);
+      const response = await axiosInstance.post("/v1/Cliente", body);
       setResponseForm(response.data);
 
       showAlert("Dados enviados com sucesso!", "success");
@@ -183,24 +180,23 @@ export default function FormSimule({ showAlert }: FormProps) {
         <Box
           sx={{
             //width: 595,
-            minWidth: isMobile ? "100%" : 525,
             background: "#FCFDFE",
             borderRadius: "3rem",
-            //marginTop: "1em",
+            marginTop: "1em",
             //border: "1px solid #E8E8E8",
             boxShadow: "0px 16px 44px 0px #7090B040",
             textAlign: "center",
-            padding: "1.5rem",
-            paddingTop: "12px",
+            padding: "2rem",
+            paddingTop: "48px",
             color: "white",
             position: "relative",
             ...bgBlur({
-              color: "#1068b1",
+              color: "#3677E0E5",
 
-              blur: 0.2,
-              opacity: 1,
+              // blur: 1,
+              // opacity: 0.5,
             }),
-            //zIndex: 2,
+            zIndex: 2,
           }}
         >
           <Grid container size={12}>
@@ -212,17 +208,15 @@ export default function FormSimule({ showAlert }: FormProps) {
                 fontWeight: 400,
                 lineHeight: "1.875rem",
                 color: "#fff",
-                marginBottom: "1.5rem",
-                textAlign: "justify",
+                marginBottom: "3rem",
               }}
             >
-              Preencha o formulário abaixo e, além de garantir a economia e
-              sustentabilidade dos seu negócio , ganhe pontos no BEES!
+              Faça o cálculo de quanto você pode economizar com a Light&nbsp;COM
             </Typography>
           </Grid>
 
           {/* Formulário */}
-          <Grid container spacing={1.5}>
+          <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 6 }}>
               <CustomTextField
                 label="Razão Social"
@@ -270,14 +264,7 @@ export default function FormSimule({ showAlert }: FormProps) {
                 helperText={errors.email?.message}
               />
             </Grid>
-            <Grid
-              size={{ xs: 12, md: 6 }}
-              sx={{
-                ...(isMobile && {
-                  mb: 1.3,
-                }),
-              }}
-            >
+            <Grid size={{ xs: 12, md: 6 }}>
               <CustomSelect
                 label="Distribuidoras"
                 control={control}
@@ -286,16 +273,6 @@ export default function FormSimule({ showAlert }: FormProps) {
                 error={errors.distribuidora}
                 helperText={errors.distribuidora?.message}
                 options={distribuidoras.map((item) => item.label)}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 12 }}>
-              <CustomTextField
-                label="CNPJ"
-                control={control}
-                name="cnpj"
-                error={errors.cnpj}
-                helperText={errors.cnpj?.message}
-                inputComponent={CnpjField as any}
               />
             </Grid>
             {/* Valor Mensal */}
@@ -536,45 +513,44 @@ export default function FormSimule({ showAlert }: FormProps) {
             </Grid>
 
             <Grid size={12} container justifyContent="center">
-              <div
-                style={{
-                  position: "relative",
+              <LoadingButton
+                size="medium"
+                type="submit"
+                loading={loading}
+                loadingPosition="center"
+                endIcon={<ArrowForwardIcon />}
+                variant="contained"
+                sx={{
+                  bgcolor: "#F7A600",
+                  //display: "inline-flex",
+                  alignItems: "center",
+                  borderRadius: "1.563rem",
+                  padding: isMobile ? "10px 16px" : "16px 24px",
+                  minHeight: isMobile ? pxToRem(50) : "3.125rem",
+                  minWidth: isMobile ? pxToRem(20) : "25rem",
+                  fontSize: isMobile ? 14 : 15,
                 }}
               >
-                <img
-                  src="/assets/abelha_formulario.png"
-                  alt="bee text"
-                  className="corner-image"
-                  style={{
-                    position: "absolute",
-                    top: -20,
-                    right: isMobile ? -50 : -60,
-                    width: isMobile ? "70px" : "90px",
-                    height: "auto",
-                    zIndex: 9999,
-                  }}
-                ></img>
-                <LoadingButton
-                  size="medium"
-                  type="submit"
-                  loading={loading}
-                  loadingPosition="center"
-                  endIcon={<ArrowForwardIcon />}
-                  variant="contained"
-                  sx={{
-                    bgcolor: "#F7A600",
-                    //display: "inline-flex",
-                    alignItems: "center",
-                    borderRadius: "1.563rem",
-                    padding: isMobile ? "10px 16px" : "16px 24px",
-                    minHeight: isMobile ? pxToRem(50) : "3.125rem",
-                    minWidth: isMobile ? pxToRem(20) : "25rem",
-                    fontSize: isMobile ? 14 : 15,
-                  }}
-                >
-                  Economize e ganhe pontos!
-                </LoadingButton>
-              </div>
+                Solicitar Simulação de Economia
+              </LoadingButton>
+
+              {/* <Button
+                      type="submit"
+                      variant="contained"
+                      endIcon={<ArrowForwardIcon />}
+                      color="primary"
+                      id="clickSolicitar"
+                      sx={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        borderRadius: "1.563rem",
+                        padding: "16px 24px 16px 24px",
+                        height: "3.125rem",
+                        width: "25rem",
+                      }}
+                    >
+                      Solicitar Simulação de Economia
+                    </Button> */}
             </Grid>
           </Grid>
         </Box>

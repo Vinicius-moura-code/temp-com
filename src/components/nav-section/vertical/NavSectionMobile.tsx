@@ -13,12 +13,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { pxToRem } from "../../../theme/typography";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
-//import AccountPopover from "../../../layouts/dashboard/header/AccountPopover";
+import AccountPopover from "../../../layouts/dashboard/header/AccountPopover";
 import React, { useState } from "react";
 import { PATH_AUTH, PATH_DASHBOARD } from "../../../routes/paths";
 import { useAuthContext } from "../../../auth/useAuthContext";
 import { useSnackbar } from "../../snackbar";
-
+import ConsumptionUnitMobile from "../../../pages/dashboard/Home/ConsumptionUnitMobile";
 import { Version } from "../../Version/Version";
 
 const Menu = [
@@ -60,12 +60,13 @@ const Menu = [
 ];
 
 const NavSectionMobile = () => {
-  const [, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const { logout } = useAuthContext();
   const navigate = useNavigate();
 
   const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleBackClick = () => {
     navigate(0);
@@ -89,7 +90,7 @@ const NavSectionMobile = () => {
 
   return (
     <>
-
+      <ConsumptionUnitMobile open={open} onClose={handleClose} />
       <Stack direction="column" alignItems="flex-start" spacing={3}>
         <IconButton
           onClick={handleBackClick}
@@ -128,7 +129,7 @@ const NavSectionMobile = () => {
           justifyContent="flex-end"
           spacing={0.5}
         >
-          {/* <AccountPopover visibleWelcome={false} /> */}
+          <AccountPopover visibleWelcome={false} />
         </Stack>
 
         <Button

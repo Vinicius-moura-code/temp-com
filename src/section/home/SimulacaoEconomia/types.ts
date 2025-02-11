@@ -10,5 +10,4 @@ export interface ISimule {
   aceiteEmailMarketing: boolean;
   unidadeConsumidora: boolean;
   fatura: string;
-  cnpj: string;
 }
